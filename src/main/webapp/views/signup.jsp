@@ -3,8 +3,8 @@
 
 <div class="row">
 	<div class="four columns">
-		<h4>Bem vindo(a) ao Spring F&oacute;rum</h4>
-		<p>Esperamos poder lhe ajudar a dominar o m&aacute;ximo poss&iacute;vel todos os conceitos por tr&aacute;s do Spring Framework e seus projetos relacionados</p>
+		<h4>Bem vindo(a) ao Portal da vida política</h4>
+		<p>Esperamos que você encontre informações úteis e que também compartilhe informações com os outros usuários.</p>
 	</div>
 	<div class="eight columns">
 	<sf:form modelAttribute="usuario" action="executarRegistro" enctype="multipart/form-data">
@@ -15,7 +15,7 @@
 		<sf:input path="email" class="four"/>
 		
 		
-		<label for="login">Nome do usu&aacute;rio (login):<sf:errors path="login" cssClass="erro"/></label>
+		<label for="login">Nome do usuário (login):<sf:errors path="login" cssClass="erro"/></label>
 		<sf:input path="login" class="three"/>
 		<label for="senha">Senha:</label>
 		<sf:password path="senha" class="three"/>

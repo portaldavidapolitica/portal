@@ -8,6 +8,6 @@
 </head>
 <body>
 	<h1>Oi mundo!</h1>
-	<p>Hora &eacute;: ${data}</p>
+	<p>Hora é: ${data}</p>
 </body>
 </html>

@@ -1,4 +1,4 @@
 <div id="rodape" class="row">
-<p class="twelve columns"><b>Spring F&oacute;rum</b> - Desenvolvido por Henrique Lobo Weissmann (Kico)<br/>
-Baseado no livro <a href="http://www.casadocodigo.com.br/products/spring">Virando o Jogo com Spring Framework</a></p>
+<p class="twelve columns"><b>Portal da vida política</b><br/>
+Portal colaborativo para que os eleitores divulguem e consultem informações sobre políticos</a></p>
 </div>

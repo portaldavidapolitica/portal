@@ -2,7 +2,7 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="SpringBrasil" version="2.5">
-	<display-name>Spring Forum</display-name>
+	<display-name>Portal da vida política</display-name>
 
 	<jsp-config>
 		<jsp-property-group>
@@ -26,9 +26,6 @@
 
 	<!-- Configuração do filtro básico da aplicação para o Spring Security -->
 	<filter>
-		<!-- O nome do filtro é importante:
-		ele aponta para o nome de um bean de mesmo nome que será criado internamente pelo
-		Spring Security para lidar com a segurança de requisições. -->
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
@@ -44,10 +41,6 @@
 	<servlet>
 		<servlet-name>DispatcherServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<!-- Por padrão o Servlet Dispatcher do Spring busca por um arquivo de 
-			configuração chamado [nome do servlet]-servlet.xml dentro do diretório /WEB-INF. 
-			Abaixo está uma chave de configuração que nos permite customizar o arquivo 
-			base aonde iniciamos a configuração dos nossos beans dentro do projeto -->
 		
 		<init-param>
 			<param-name>contextConfigLocation</param-name>

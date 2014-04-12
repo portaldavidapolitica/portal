@@ -3,7 +3,7 @@
 <table>
 	<thead>
 		<th>Assunto</th>
-		<th>T&iacute;tulo</th>
+		<th>Título</th>
 	</thead>
 	<tbody>
 		<c:forEach items="${topicos}" var="post">

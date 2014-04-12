@@ -1,6 +1,6 @@
 <div class="row">
-	<h3>Usu&aacute;rio inv&aacute;lido</h3>
-	<p>Perdeu sua senha? Preencha seu e-mail no formul&aacute;rio abaixo e uma nova ser&aacute; gerada para voc&ecirc;.</p>
+	<h3>Usuário ou senha inválidos</h3>
+	<p>Perdeu sua senha? Preencha seu e-mail no formulário abaixo e uma nova senha gerada para você.</p>
 	
 	<form action="retrieve">
 		<input type="text" name="email" placeholder="Seu e-mail"/>

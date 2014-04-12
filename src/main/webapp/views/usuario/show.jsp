@@ -4,7 +4,7 @@
 <div class="chamada row">
 		
 			<div class="twelve columns">
-				<h3 style="color:white;">Detalhes do usu&aacute;rio</h3>
+				<h3 style="color:white;">Detalhes do usuário</h3>
 			</div>
 		
 </div>
@@ -39,7 +39,7 @@
 </div>
 <br/>
 <div class="row">
-	<h4>&Uacute;ltimos posts</h4>
+	<h4>Últimos posts</h4>
 	<a href="javascript:exporPosts('${usuario.login}')">Expor posts</a>
 	<div id="posts"></div>
 </div>
