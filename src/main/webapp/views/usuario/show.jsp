@@ -11,6 +11,8 @@
 </div>
 <div class="row">
 	<h4>Dados b&aacute;sicos</h4>
+	
+	<a href="../../">Voltar</a>
 </div>
 <br/>
 <div class="row">

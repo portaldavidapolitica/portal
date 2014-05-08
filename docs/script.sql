@@ -95,3 +95,90 @@ cod_usuario INT,
 cod_tipo_alteracao INT,
 valor_antigo LONGTEXT,
 valor_novo LONGTEXT);
+
+
+create table acao(
+id int not null auto_increment,
+nome varchar(100),
+primary key(id)
+);
+
+create table partido_acao(
+id int not null auto_increment,
+acao_id int,
+usuarioInclusao_id int,
+usuarioAlteracao_id int,
+txt_valor_antigo varchar(50),
+txt_valor_novo varchar(50),
+dat_acao datetime,
+primary key(id),
+foreign key(usuarioInclusao_id) references usuario(id),
+foreign key(usuarioAlteracao_id) references usuario(id),
+foreign key(acao_id) references acao(id)
+);
+
+create table politico_acao(
+id int not null auto_increment,
+acao_id int,
+usuarioInclusao_id int,
+usuarioAlteracao_id int,
+txt_valor_antigo varchar(50),
+txt_valor_novo varchar(50),
+dat_acao datetime,
+primary key(id),
+foreign key(usuarioInclusao_id) references usuario(id),
+foreign key(usuarioAlteracao_id) references usuario(id),
+foreign key(acao_id) references acao(id)
+);
+
+create table partido(
+id int not null auto_increment,
+nome varchar(50),
+sigla varchar(10),
+descricao varchar(200),
+acao_id int,
+primary key(id),
+foreign key(acao_id) references partido_acao
+);
+
+create table politico(
+id int not null auto_increment,
+nome varchar(100),
+acao_id int,
+primary key(id),
+foreign key(partido_id) references partido(id),
+foreign key(acao_id) references politico_acao     
+);
+
+create table status_publicacao(
+id int not null auto_increment,
+nome varchar(50),
+descricao varchar(200),
+primary key(id)
+);
+
+
+insert into status_publicacao(nome,descricao) values('Aprovado','Publicacao aprovada pelo moderador'); 
+insert into status_publicacao(nome,descricao) values('Reprovado','Publicacao reprovada pelo moderador'); 
+insert into status_publicacao(nome,descricao) values('Aguardando aprovacao','Publicacao aguardando aprovacao pelo moderador'); 
+insert into acao(nome) values('Cadastrar Partido');
+insert into acao(nome) values('Editar Partido');
+insert into acao(nome) values('Excluir Partido');
+insert into acao(nome) values('Cadastrar Politico');
+insert into acao(nome) values('Editar Politico');
+insert into acao(nome) values('Excluir Politico');
+
+
+create table publicacao(
+id int not null auto_increment,
+titulo varchar(100),
+texto varchar(500),
+politico_id int,
+statusPublicacao_id int,
+usuario_id int,
+primary key(id),
+foreign key(politico_id) references politico(id),
+foreign key(statusPublicacao_id) references status_publicacao(id),
+foreign key(usuario_id) references usuario(id)
+);
+

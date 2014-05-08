@@ -13,6 +13,7 @@ import org.hibernate.annotations.GenerationTime;
 @Entity @Table(name="assunto")
 public class Assunto implements Comparable, java.io.Serializable {
 	
+	private static final long serialVersionUID = -2872847089464608575L;
 	@Id @Generated(GenerationTime.INSERT) 
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id", unique=true) 
@@ -41,5 +42,31 @@ public class Assunto implements Comparable, java.io.Serializable {
 			return 0;
 		}
 	}
-
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Assunto other = (Assunto) obj;
+		if (id != other.id)
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		return true;
+	}
+	
 }

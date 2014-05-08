@@ -22,7 +22,7 @@ import br.com.itexto.springforum.dao.DAOPermissaoUsuario;
 import br.com.itexto.springforum.dao.DAOTopico;
 import br.com.itexto.springforum.dao.DAOUsuario;
 import br.com.itexto.springforum.dao.mocks.MockDAOAssunto;
-import br.com.itexto.springforum.entidades.Assunto;
+//import br.com.itexto.springforum.entidades.Assunto;
 import br.com.itexto.springforum.entidades.Usuario;
 
 @Controller

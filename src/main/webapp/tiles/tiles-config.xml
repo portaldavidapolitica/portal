@@ -2,38 +2,67 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
-	
+
 	<definition name="main" template="/views/templates/main.jsp">
-		<put-attribute name="titulo" value="Portal da vida política"/>
-		<put-attribute name="cabecalho" value="/views/templates/cabecalho.jsp"/>
-		<put-attribute name="rodape" value="/views/templates/rodape.jsp"/>
+		<put-attribute name="titulo" value="Portal da vida política" />
+		<put-attribute name="cabecalho" value="/views/templates/cabecalho.jsp" />
+		<put-attribute name="rodape" value="/views/templates/rodape.jsp" />
+	</definition>
+
+	<definition name="index" extends="main">
+		<put-attribute name="conteudo" value="/views/index.jsp" />
+	</definition>
+
+	<definition name="registro" extends="main">
+		<put-attribute name="conteudo" value="/views/signup.jsp" />
+		<put-attribute name="titulo" value="Bem vindo(a)!" />
+	</definition>
+
+	<definition name="usuario/show" extends="main">
+		<put-attribute name="conteudo" value="/views/usuario/show.jsp" />
+		<put-attribute name="titulo" value="Detalhes do usuário" />
+	</definition>
+
+	<definition name="assunto/show" extends="main">
+		<put-attribute name="conteudo" value="/views/assunto/show.jsp" />
+	</definition>
+
+	<definition name="usuario/posts" template="/views/usuario/postsUsuario.jsp" />
+
+	<definition name="loginFalho" extends="main">
+		<put-attribute name="conteudo" value="/views/loginFalho.jsp" />
+	</definition>
+
+	<definition name="cadastro/partido" extends="main">
+		<put-attribute name="conteudo" value="/views/cadastro/partido.jsp" />
+		<put-attribute name="titulo" value="Detalhes do usuário" />
+	</definition>
+
+	<definition name="cadastro/politico" extends="main">
+		<put-attribute name="conteudo" value="/views/cadastro/politico.jsp" />
+		<put-attribute name="titulo" value="Bem vindo(a)!" />
+	</definition>
+
+	<definition name="gerenciamento/gerenciarUsuarios" extends="main">
+		<put-attribute name="conteudo"
+			value="/views/gerenciamento/gerenciarUsuarios.jsp" />
+		<put-attribute name="titulo" value="Gerenciamento de Usuarios" />
+	</definition>
+
+	<definition name="publicacao/listarPublicacoes" extends="main">
+		<put-attribute name="conteudo"
+			value="/views/publicacao/listarPublicacoes.jsp" />
+		<put-attribute name="titulo" value="Lista de Publicacoes" />
+	</definition>
+
+	<definition name="publicacao/publicar" extends="main">
+		<put-attribute name="conteudo" value="/views/publicacao/publicar.jsp" />
+		<put-attribute name="titulo" value="Cadastro de Publicacoes" />
+	</definition>
+
+	<definition name="publicacao/gerenciarPublicacoes" extends="main">
+		<put-attribute name="conteudo" value="/views/publicacao/gerenciarPublicacoes.jsp" />
+		<put-attribute name="titulo" value="Gerenciar Publicacoes" />
 	</definition>
 	
-    <definition name="index"  extends="main" >
-    	<put-attribute name="conteudo" value="/views/index.jsp"/>
-    </definition>
-    
-    <definition name="registro" extends="main">
-    	<put-attribute name="conteudo" value="/views/signup.jsp"/>
-    	<put-attribute name="titulo" value="Bem vindo(a)!"/>
-    </definition>
-    
-    <definition name="usuario/show" extends="main">
-    	<put-attribute name="conteudo" value="/views/usuario/show.jsp"/>
-    	<put-attribute name="titulo" value="Detalhes do usuário"/>
-    </definition>
-    
-    <definition name="assunto/show" extends="main">
-    	<put-attribute name="conteudo" value="/views/assunto/show.jsp"/>
-    </definition>
-    
-    <definition name="usuario/posts" template="/views/usuario/postsUsuario.jsp"/>
-    	
-    
-    
-    <definition name="loginFalho" extends="main">
-    	<put-attribute name="conteudo" value="/views/loginFalho.jsp"/>
-    </definition>
-
-
 </tiles-definitions>

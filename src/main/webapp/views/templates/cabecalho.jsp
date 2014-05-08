@@ -23,7 +23,7 @@
 			
 			</sec:authorize>
 			<sec:authorize access="isAuthenticated()">
-				Bem vindo(a) <sec:authentication property="principal"/> - <a href="<c:url value="/j_spring_security_logout"/>">Sair</a>
+				Bem vindo(a) <sec:authentication property="principal" /> - <a href="<c:url value="/j_spring_security_logout"/>">Sair</a>
 			</sec:authorize>
 			
 			

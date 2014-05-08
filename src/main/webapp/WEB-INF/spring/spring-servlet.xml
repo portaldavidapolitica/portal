@@ -21,7 +21,7 @@
 	
 	<context:annotation-config />
 	
-	<!-- O view resolver da aplicação -->
+	<!-- O view resolver da aplicação--> 
 	<bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		<property name="definitions">
 			<list>
@@ -35,8 +35,8 @@
 	</bean>
 	
 	 
-	 <!-- O view resolver usado em nosso 'Ola Mundo' -->
-	 <!--
+	 <!-- O view resolver usado em nosso 'Ola Mundo' 
+	 
 	 	 
 	 <bean id="viewResolver"
     	class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
@@ -46,8 +46,7 @@
         <property name="suffix">
             <value>.jsp</value>
         </property>
-    </bean>
-     -->
+    </bean> -->
 	 
 	<!-- Habilitando upload de arquivos -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

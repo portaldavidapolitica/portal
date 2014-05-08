@@ -27,5 +27,4 @@ public class AssuntoController {
 		
 		return resultado;
 	}
-	
 }

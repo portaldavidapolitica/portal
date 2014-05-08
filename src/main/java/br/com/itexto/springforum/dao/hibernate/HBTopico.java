@@ -21,6 +21,7 @@ public class HBTopico extends HBDAO<Topico> implements DAOTopico {
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Topico> getTopicosPorAssunto(Assunto assunto, int offset, int max) {
 		Query busca = getSession().createQuery("from Topico topico where topico.assunto = ?");
 		busca.setEntity(0, assunto);

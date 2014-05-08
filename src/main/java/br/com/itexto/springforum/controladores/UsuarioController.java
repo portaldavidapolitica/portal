@@ -44,7 +44,7 @@ public class UsuarioController {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("Vou expor o usuario");
 		Usuario usuario = getDaoUsuario().get(id);
-		System.out.println("Encontrei o usuario: " + usuario);
+		System.out.println("Encontrei o usuario: " + usuario.getNome());
 		mav.getModel().put("usuario", usuario);
 		mav.setViewName("usuario/show");
 		return mav;

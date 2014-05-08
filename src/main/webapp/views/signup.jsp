@@ -24,6 +24,11 @@
 		
 		
 		<input type="submit" value="Fa&ccedil;a parte!" class="tiny button success"/>
+		
+		<br/>
+		<br/>
+		
+		<a href="../portal">Voltar</a>
 	</sf:form>
 	</div>
 </div>
