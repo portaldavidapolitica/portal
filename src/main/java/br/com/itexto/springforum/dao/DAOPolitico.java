@@ -12,4 +12,6 @@ public interface DAOPolitico extends DAOBase<Politico> {
 	List<Politico> getPoliticosPorPartido(Partido partido);
 	
 	Politico getPoliticoPorNomeEPartido(String nome, Long idPartido);
+	
+	List<Politico> getPoliticosAprovados();
 }

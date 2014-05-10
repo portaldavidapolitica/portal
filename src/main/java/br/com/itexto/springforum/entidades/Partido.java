@@ -1,9 +1,7 @@
 package br.com.itexto.springforum.entidades;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.io.Serializable;	
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,6 +42,10 @@ public class Partido implements Serializable {
 	@Column(name = "data_criacao")
 	private Date dataCriacao;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_status_partido")
+	private StatusPartido statusPartido;
+	
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "acao_id")
 //	private List<PartidoAcao> acao = new ArrayList<PartidoAcao>();
 	
@@ -100,6 +103,14 @@ public class Partido implements Serializable {
 		this.dataCriacao = dataCriacao;
 	}
 	
+	public StatusPartido getStatusPartido() {
+		return statusPartido;
+	}
+
+	public void setStatusPartido(StatusPartido statusPartido) {
+		this.statusPartido = statusPartido;
+	}
+	
 //	public List<PartidoAcao> getAcao() {
 //		return acao;
 //	}
@@ -107,7 +118,7 @@ public class Partido implements Serializable {
 //	public void setAcao(List<PartidoAcao> acao) {
 //		this.acao = acao;
 //	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -1,6 +1,6 @@
 package br.com.itexto.springforum.controladores;
 
-import java.io.File;
+import java.io.File;	
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.itexto.springforum.Enum.EnumStatusPartido;
+import br.com.itexto.springforum.Enum.EnumStatusPublicacao;
 import br.com.itexto.springforum.dao.DAOPartido;
 import br.com.itexto.springforum.dao.DAOPolitico;
+import br.com.itexto.springforum.dao.DAOStatusPartido;
 import br.com.itexto.springforum.entidades.Partido;
 import br.com.itexto.springforum.entidades.Politico;
 
@@ -29,6 +32,9 @@ public class PartidoController {
 	@Autowired
 	private DAOPolitico daoPolitico;
 
+	@Autowired
+	private DAOStatusPartido daoStatusPartido;
+	
 	@RequestMapping("/cadastro/partido")
 	public ModelAndView partido(ModelAndView model) {
 
@@ -37,13 +43,24 @@ public class PartidoController {
 		}
 		if (model.getModelMap().get("partidos") == null
 				&& model.getModelMap().get("exibePartidos") == null) {
-			model.addObject("partidos", daoPartido.list(0, 100));
+			model.addObject("partidos", daoPartido.getPartidosAprovados());
 		}
 
 		model.setViewName("cadastro/partido");
 		return model;
 	}
 
+	@RequestMapping("partido/gerenciarPartidos")
+	public ModelAndView gerenciar(ModelAndView mav) {
+
+		if (mav.getModelMap().get("partidos") == null) {
+			mav.addObject("partidos", daoPartido.list(0, 200));
+		}
+
+		mav.setViewName("partido/gerenciarPartidos");
+		return mav;
+	}
+	
 	@RequestMapping(value = "cadastro/cadastrarPartido/{idPartido}", method = RequestMethod.POST)
 	public ModelAndView partido(
 			@PathVariable("idPartido") Long idPartido,
@@ -60,6 +77,7 @@ public class PartidoController {
 			partido = daoPartido.get(idPartido);
 		} else {
 			partido.setDataCriacao(new Date());
+			partido.setStatusPartido(daoStatusPartido.get((long) EnumStatusPartido.AGUARDANDO_APROVACAO.getAcao()));
 		}
 
 		partido.setNome(nome);
@@ -125,4 +143,26 @@ public class PartidoController {
 		}
 	}
 
+	@RequestMapping(value = "partido/gerenciarPartidos/aprovar/{id}")
+	public ModelAndView aprovarPartido(@PathVariable("id") Long id) {
+		ModelAndView mav = new ModelAndView();
+		Partido partido = daoPartido.get(id);
+		partido.setStatusPartido(daoStatusPartido
+				.get((long) EnumStatusPublicacao.APROVADO.getAcao()));
+		daoPartido.persistir(partido);
+		mav.addObject("mensagem", "Partido aprovado com sucesso!");
+		return gerenciar(mav);
+	}
+
+	@RequestMapping(value = "partido/gerenciarPartidos/reprovar/{id}")
+	public ModelAndView reprovarPublicacao(@PathVariable("id") Long id) {
+		ModelAndView mav = new ModelAndView();
+		Partido partido = daoPartido.get(id);
+		partido.setStatusPartido(daoStatusPartido
+				.get((long) EnumStatusPublicacao.REPROVADO.getAcao()));
+		daoPartido.persistir(partido);
+		mav.addObject("mensagem", "Partido reprovado com sucesso!");
+		return gerenciar(mav);
+	}
+	
 }

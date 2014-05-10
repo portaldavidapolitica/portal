@@ -58,6 +58,8 @@
 				<value>br.com.itexto.springforum.entidades.Politico</value>
 				<value>br.com.itexto.springforum.entidades.StatusPublicacao</value>
 				<value>br.com.itexto.springforum.entidades.Publicacao</value>
+				<value>br.com.itexto.springforum.entidades.StatusPolitico</value>
+				<value>br.com.itexto.springforum.entidades.StatusPartido</value>
 				<!--  <value>br.com.itexto.springforum.entidades.PartidoAcao</value>
 				<value>br.com.itexto.springforum.entidades.PoliticoAcao</value>
 				<value>br.com.itexto.springforum.entidades.Acao</value>-->

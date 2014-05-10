@@ -13,8 +13,15 @@
 							<li><a
 								href="<c:url value="publicacao/gerenciarPublicacoes"/>"><c:out
 										value="Gerenciar Publicacoes" /></a></li>
-							<li><a href="<c:url value="gerenciar/usuarios"/>"><c:out
-										value="Gerenciar Usuarios" /></a></li>
+							<li><a
+								href="<c:url value="politico/gerenciarPoliticos"/>"><c:out
+										value="Gerenciar Politicos" /></a></li>
+							<li><a href="<c:url value="partido/gerenciarPartidos"/>"><c:out
+										value="Gerenciar Partidos" /></a></li>
+							<sec:authorize access="hasRole('ROLE_ADMIN')">
+								<li><a href="<c:url value="gerenciar/usuarios"/>"><c:out
+											value="Gerenciar Usuarios" /></a></li>
+							</sec:authorize>
 						</ul></li>
 				</sec:authorize>
 

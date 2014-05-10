@@ -82,6 +82,8 @@ primary key(id)
 insert into status_publicacao(nome,descricao) values('Aprovado','Publicacao aprovada pelo moderador'); 
 insert into status_publicacao(nome,descricao) values('Reprovado','Publicacao reprovada pelo moderador'); 
 insert into status_publicacao(nome,descricao) values('Aguardando aprovacao','Publicacao aguardando aprovacao pelo moderador'); 
+
+
 insert into acao(nome) values('Cadastrar Partido');
 insert into acao(nome) values('Editar Partido');
 insert into acao(nome) values('Excluir Partido');
@@ -101,4 +103,38 @@ foreign key(id_politico) references politico(id),
 foreign key(id_status_publicacao) references status_publicacao(id),
 foreign key(id_usuario) references usuario(id)
 );
+
+create table status_partido(
+id_status_partido int not null auto_increment,
+nome varchar(50),
+descricao varchar(200),
+primary key(id_status_partido)
+);
+
+insert into status_partido(nome,descricao) values('Aprovado','Partido aprovado pelo moderador'); 
+insert into status_partido(nome,descricao) values('Reprovado','Partido reprovado pelo moderador'); 
+insert into status_partido(nome,descricao) values('Aguardando aprovacao','Partido aguardando aprovacao pelo moderador'); 
+
+alter table partido
+add id_status_partido int;
+
+alter table partido
+add foreign key (id_status_partido) references status_partido(id_status_partido); 
+
+create table status_politico(
+id_status_politico int not null auto_increment,
+nome varchar(50),
+descricao varchar(200),
+primary key(id_status_politico)
+);
+
+insert into status_politico(nome,descricao) values('Aprovado','Politico aprovado pelo moderador'); 
+insert into status_politico(nome,descricao) values('Reprovado','Politico reprovado pelo moderador'); 
+insert into status_politico(nome,descricao) values('Aguardando aprovacao','Politico aguardando aprovacao pelo moderador'); 
+
+alter table politico
+add id_status_politico int;
+
+alter table politico
+add foreign key (id_status_politico) references status_politico(id_status_politico)
 

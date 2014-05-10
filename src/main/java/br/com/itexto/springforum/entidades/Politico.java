@@ -33,6 +33,10 @@ public class Politico implements Serializable{
 	@JoinColumn(name = "id_partido")
 	private Partido partido;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_status_politico")
+    private StatusPolitico statusPolitico;
+	
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "acao_id")
 //	private List<PoliticoAcao> acao = new ArrayList<PoliticoAcao>();
 	
@@ -71,6 +75,14 @@ public class Politico implements Serializable{
 		this.partido = partido;
 	}
 	
+	public StatusPolitico getStatusPolitico() {
+		return statusPolitico;
+	}
+
+	public void setStatusPolitico(StatusPolitico statusPolitico) {
+		this.statusPolitico = statusPolitico;
+	}
+	
 //	public List<PoliticoAcao> getAcao() {
 //		return acao;
 //	}
@@ -79,6 +91,7 @@ public class Politico implements Serializable{
 //		this.acao = acao;
 //	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

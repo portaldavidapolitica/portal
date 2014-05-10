@@ -1,15 +1,14 @@
 package br.com.itexto.springforum.dao.hibernate;
 
-import java.util.ArrayList;
+import java.util.ArrayList	;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.itexto.springforum.Enum.EnumStatusPolitico;
 import br.com.itexto.springforum.dao.DAOPolitico;
 import br.com.itexto.springforum.entidades.Partido;
 import br.com.itexto.springforum.entidades.Politico;
@@ -47,6 +46,14 @@ public class HBPolitico extends HBDAO<Politico> implements DAOPolitico {
 		query.setString(0, nome);
 		query.setLong(0, idPartido);
 		return (Politico) query.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Politico> getPoliticosAprovados() {
+		Query query = getSession().createQuery("from Politico p where p.statusPolitico.idStatusPolitico = ?");
+		query.setInteger(0, EnumStatusPolitico.APROVADO.getAcao());
+		return query.list();
 	}
 
 }

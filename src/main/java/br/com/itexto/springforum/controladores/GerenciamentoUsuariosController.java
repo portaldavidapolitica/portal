@@ -40,33 +40,31 @@ public class GerenciamentoUsuariosController {
 		}
 
 		List<String> roles = new ArrayList<String>();
-		roles.add("ROLE_MEMBRO");
-		roles.add("ROLE_MODERADOR");
-		roles.add("ROLE_ADMIN");
+		roles.add("MEMBRO");
+		roles.add("MODERADOR");
+		roles.add("ADMIN");
 		mav.addObject("roles", roles);
 
 		mav.setViewName("gerenciamento/gerenciarUsuarios");
 		return mav;
 	}
 
-	@RequestMapping(value = "gerenciarmento/gerenciarUsuarios/editarUsuario")
+	@RequestMapping(value = "gerenciamento/gerenciarUsuarios/editarUsuario")
 	public ModelAndView editarUsuario(
 			@RequestParam(value = "idUsuario") String id,
 			@RequestParam(value = "permissoes") String[] permissoes) {
 		ModelAndView mav = new ModelAndView();
 		Usuario usuario = daoUsuario.get(Long.parseLong(id));
+		List<PermissaoUsuario> listaPermissoes = daoPermissaoUsuario
+				.getPermissoesUsuario(usuario);
+		if (listaPermissoes.size() > 0) {
+			for (PermissaoUsuario perm : listaPermissoes) {
+				daoPermissaoUsuario.excluir(perm);
+			}
+		}
 
-		if (permissoes != null) {
-			for (String permissao : permissoes) {
-				daoPermissaoUsuario.addRole(permissao, usuario);
-			}
-		} else {
-			List<PermissaoUsuario> permissoesUsuario = daoPermissaoUsuario
-					.getPermissoesUsuario(usuario);
-			for (PermissaoUsuario permissao : permissoesUsuario) {
-				daoPermissaoUsuario.excluir(permissao);
-			}
-			usuario.setPermissoesUsuario(null);
+		for (String permissao : permissoes) {
+			daoPermissaoUsuario.addRole("ROLE_"+permissao, usuario);
 		}
 
 		mav.addObject("mensagem", "Usuario editado com sucesso!");

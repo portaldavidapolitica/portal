@@ -14,30 +14,38 @@
 					<li><a href="#">Gerenciamento</a>
 						<ul>
 							<li><a
-								href="<c:url value="publicacao/gerenciarPublicacoes"/>"><c:out
+								href="<c:url value="../../publicacao/gerenciarPublicacoes"/>"><c:out
 										value="Gerenciar Publicacoes" /></a></li>
-							<li><a href="<c:url value="gerenciar/usuarios"/>"><c:out
-										value="Gerenciar Usuarios" /></a></li>
+							<li><a
+								href="<c:url value="../../politico/gerenciarPoliticos"/>"><c:out
+										value="Gerenciar Politicos" /></a></li>
+							<li><a href="<c:url value="../../partido/gerenciarPartidos"/>"><c:out
+										value="Gerenciar Partidos" /></a></li>
+							<sec:authorize access="hasRole('ROLE_ADMIN')">
+								<li><a href="<c:url value="../../gerenciar/usuarios"/>"><c:out
+											value="Gerenciar Usuarios" /></a></li>
+							</sec:authorize>
 						</ul></li>
 				</sec:authorize>
 
-				<sec:authorize access="hasRole('ROLE_MEMBRO')">
+				<sec:authorize
+					access="hasAnyRole('ROLE_MEMBRO','ROLE_MODERADOR','ROLE_ADMIN')">
 					<li><a href="#">Cadastros</a>
 						<ul>
-							<li><a href="<c:url value="cadastro/partido"/>"><c:out
+							<li><a href="<c:url value="../../cadastro/partido"/>"><c:out
 										value="Cadastro Partido" /></a></li>
-							<li><a href="cadastro/politico"><c:out
+							<li><a href="../../cadastro/politico"><c:out
 										value="Cadastro Politico" /></a></li>
 						</ul></li>
 				</sec:authorize>
 
 				<li><a href="#">Consulta</a>
 					<ul>
-						<li><a href="cadastro/politico"><c:out
+						<li><a href="../../cadastro/politico"><c:out
 									value="Consulta Politicos" /></a></li>
-						<li><a href="<c:url value="cadastro/partido"/>"><c:out
+						<li><a href="<c:url value="../../cadastro/partido"/>"><c:out
 									value="Consulta Partidos" /></a></li>
-						<li><a href="<c:url value="publicacao"/>"><c:out
+						<li><a href="<c:url value="../../publicacao"/>"><c:out
 									value="Consulta de Publicacoes" /></a></li>
 					</ul>
 				<li>
@@ -47,7 +55,7 @@
 </div>
 
 <div class="row">
-	<div class="eight columns" style="position: inherit; z-index: -1;">
+	<div class="twelve columns" style="position: inherit; z-index: -1;">
 		<sf:form name="frmPublicar" action="cadastrar">
 
 			<input type="hidden" name="acao" value="${acao}" />
@@ -67,47 +75,42 @@
 			<br />
 			<br />
 
-			<table class="tableBorder">
-				<tr>
-					<td><b><c:out value="Titulo: " /></b></td>
-					<td><input name="titulo" value="${publicacao.titulo}" /></td>
-				</tr>
-				<tr>
-					<td><b><c:out value="Texto: " /></b></td>
-					<td><textarea name="texto" cols="100" rows="10">${publicacao.texto}</textarea></td>
-				</tr>
-				<tr>
-					<td><b><c:out value="Politico: " /></b></td>
-					<td><c:out value="${publicacao.politico.nome}" /></td>
-				</tr>
-				<tr>
-					<td><b><c:out value="Partido: " /></b></td>
-					<td><c:out value="${publicacao.politico.partido.nome}" /></td>
-				</tr>
+			<center>
+				<table class="tableBorder">
+					<tr style="background: white">
+						<td><b><c:out value="Titulo: " /></b></td>
+						<td><input name="titulo" value="${publicacao.titulo}" /></td>
+					</tr>
+					<tr style="background: white">
+						<td><b><c:out value="Texto: " /></b></td>
+						<td><textarea name="texto" cols="100" rows="10">${publicacao.texto}</textarea></td>
+					</tr>
+					<tr style="background: white">
+						<td><b><c:out value="Politico: " /></b></td>
+						<td><c:out value="${publicacao.politico.nome}" /></td>
+					</tr>
+					<tr style="background: white">
+						<td><b><c:out value="Partido: " /></b></td>
+						<td><c:out value="${publicacao.politico.partido.nome}" /></td>
+					</tr>
 
-				<c:choose>
-					<c:when test="${acao eq 'editar'}">
-						<sec:authorize ifAnyGranted="'ROLE_MODERADOR','ROLE_ADMIN'">
-							<tr>
-								<td><input type="submit" value="Editar Publicacao"
-									class="tiny button success" /></td>
-							</tr>
-						</sec:authorize>
-					</c:when>
-					<c:otherwise>
-						<sec:authorize access="hasRole('ROLE_MEMBRO')">
-							<tr>
+					<c:if test="${acao eq 'salvar'}">
+						<sec:authorize
+							access="hasAnyRole('ROLE_MEMBRO','ROLE_MODERADOR','ROLE_ADMIN')">
+							<tr style="background: white">
 								<td><input type="submit" value="Publicar"
 									class="tiny button success" /></td>
 							</tr>
 						</sec:authorize>
-					</c:otherwise>
-				</c:choose>
-			</table>
+					</c:if>
+				</table>
+			</center>
 
 			<br />
 			<br />
+
 			<a href="/portal/publicacao">Voltar</a>
+
 		</sf:form>
 	</div>
 </div>

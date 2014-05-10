@@ -61,49 +61,42 @@
 
 <div class="row">
 	<div class="twelve columns" style="position: inherit; z-index: -1;">
-		<sf:form name="frmGerenciarPublicacoes">
+		<sf:form name="frmGerenciarPoliticos">
 			<input type="hidden" name="msg" value="${mensagem}" />
 
 			<center>
-				<b><c:out value="Gerenciamento de Publicações" /></b> <br /> <br />
+				<b><c:out value="Gerenciamento de Politicos" /></b> <br /> <br />
 				<br />
 			</center>
 
 			<center>
 				<table class="tableBorder">
 					<c:choose>
-						<c:when test="${fn:length(publicacoes) gt 0}">
+						<c:when test="${fn:length(politicos) gt 0}">
 							<tr>
-								<td><b><c:out value="Titulo" /></b></td>
-								<td><b><c:out value="Texto" /></b></td>
-								<td><b><c:out value="Politico" /></b></td>
+								<td><b><c:out value="Nome" /></b></td>
 								<td><b><c:out value="Partido" /></b></td>
 								<td><b><c:out value="Status" /></b></td>
 							</tr>
-							<c:forEach var="lista" items="${publicacoes}">
+							<c:forEach var="lista" items="${politicos}">
 								<tr>
+									<td style="background: white"><c:out value="${lista.nome}" /></td>
 									<td style="background: white"><c:out
-											value="${lista.titulo}" /></td>
+											value="${lista.partido.nome}" /></td>
 									<td style="background: white"><c:out
-											value="${lista.texto}" /></td>
-									<td style="background: white"><c:out
-											value="${lista.politico.nome}" /></td>
-									<td style="background: white"><c:out
-											value="${lista.politico.partido.nome}" /></td>
-									<td style="background: white"><c:out
-											value="${lista.statusPublicacao.nome}" /></td>
+											value="${lista.statusPolitico.nome}" /></td>
 									<td style="background: white"><a
-										href="/portal/publicacao/gerenciarPublicacoes/aprovar/${lista.id}"><c:out
-												value="Aprovar Publicacao" /></a></td>
+										href="/portal/politico/gerenciarPoliticos/aprovar/${lista.id}"><c:out
+												value="Aprovar Politico" /></a></td>
 									<td style="background: white"><a
-										href="/portal/publicacao/gerenciarPublicacoes/reprovar/${lista.id}"><c:out
-												value="Reprovar Publicacao" /></a></td>
+										href="/portal/politico/gerenciarPoliticos/reprovar/${lista.id}"><c:out
+												value="Reprovar Politico" /></a></td>
 								</tr>
 							</c:forEach>
 						</c:when>
 						<c:otherwise>
 							<tr>
-								<td><c:out value="Não existem publicações cadastradas" /></td>
+								<td><c:out value="Não existem politicos cadastrados" /></td>
 							</tr>
 						</c:otherwise>
 					</c:choose>
@@ -117,9 +110,9 @@
 	$(function() {
 		if ($('[name=msg]').val() != '') {
 			alert($('[name=msg]').val());
-			$('[name=frmGerenciarPublicacoes]').attr("action",
-					"../../../publicacao/gerenciarPublicacoes");
-			$('[name=frmGerenciarPublicacoes]').submit();
+			$('[name=frmGerenciarPoliticos]').attr("action",
+					"../../../politico/gerenciarPoliticos");
+			$('[name=frmGerenciarPoliticos]').submit();
 		}
 	});
 </script>

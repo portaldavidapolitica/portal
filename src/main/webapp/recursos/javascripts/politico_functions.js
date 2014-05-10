@@ -20,6 +20,8 @@ function valida() {
 
 $(function(){
 	if($('[name=msg]').val() != ''){
-		alert($('[name=msg]').val());	
+		alert($('[name=msg]').val());
+		$('[name=frmPolitico]').attr("action","../../cadastro/politico");
+		$('[name=frmPolitico]').submit();
 	}
 });

@@ -1,10 +1,13 @@
 package br.com.itexto.springforum.dao.hibernate;
 
+import java.util.List;	
+
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.itexto.springforum.Enum.EnumStatusPartido;
 import br.com.itexto.springforum.dao.DAOPartido;
 import br.com.itexto.springforum.entidades.Partido;
 
@@ -19,7 +22,7 @@ public class HBPartido extends HBDAO<Partido> implements DAOPartido {
 
 	@Override
 	public Partido getPartidoPorNome(String nome) {
-		Query query = getSession().createQuery("from Partido p where p.nome = ?");
+		Query query = getSession().createQuery("from Partido p where p.nome = ? and p.");
 		query.setString(0, nome);
 		return (Partido) query.uniqueResult();
 	}
@@ -29,6 +32,14 @@ public class HBPartido extends HBDAO<Partido> implements DAOPartido {
 		Query query = getSession().createQuery("from Partido p where p.sigla = ?");
 		query.setString(0, sigla);
 		return (Partido) query.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Partido> getPartidosAprovados() {
+		Query query = getSession().createQuery("from Partido p where p.statusPartido.idStatusPartido = ?");
+		query.setInteger(0, EnumStatusPartido.APROVADO.getAcao());
+		return query.list();
 	}
 
 }

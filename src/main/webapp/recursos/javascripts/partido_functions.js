@@ -24,7 +24,9 @@ function valida() {
 
 $(function(){
 	if($('[name=msg]').val() != ''){
-		alert($('[name=msg]').val());	
+		alert($('[name=msg]').val());
+		$('[name=frmPartido]').attr("action","../../cadastro/partido");
+		$('[name=frmPartido]').submit();
 	}
 });
 
