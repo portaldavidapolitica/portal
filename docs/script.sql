@@ -136,18 +136,15 @@ id int not null auto_increment,
 nome varchar(50),
 sigla varchar(10),
 descricao varchar(200),
-acao_id int,
-primary key(id),
-foreign key(acao_id) references partido_acao
+primary key(id)
 );
 
 create table politico(
 id int not null auto_increment,
 nome varchar(100),
-acao_id int,
+id_partido int,
 primary key(id),
-foreign key(partido_id) references partido(id),
-foreign key(acao_id) references politico_acao     
+foreign key(id_partido) references partido(id)
 );
 
 create table status_publicacao(
@@ -173,12 +170,12 @@ create table publicacao(
 id int not null auto_increment,
 titulo varchar(100),
 texto varchar(500),
-politico_id int,
-statusPublicacao_id int,
-usuario_id int,
+id_politico int,
+id_status_publicacao int,
+id_usuario int,
 primary key(id),
-foreign key(politico_id) references politico(id),
-foreign key(statusPublicacao_id) references status_publicacao(id),
-foreign key(usuario_id) references usuario(id)
+foreign key(id_politico) references politico(id),
+foreign key(id_status_publicacao) references status_publicacao(id),
+foreign key(id_usuario) references usuario(id)
 );
 
