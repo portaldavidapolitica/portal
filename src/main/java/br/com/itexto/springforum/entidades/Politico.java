@@ -30,7 +30,7 @@ public class Politico implements Serializable{
 	private String nome;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "partido_id")
+	@JoinColumn(name = "id_partido")
 	private Partido partido;
 
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "acao_id")

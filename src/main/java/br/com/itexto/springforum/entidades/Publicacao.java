@@ -33,15 +33,15 @@ public class Publicacao implements Serializable {
 	private String texto;
 	
     @ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "politico_id")
+	@JoinColumn(name = "id_politico")
 	private Politico politico;
 	
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "statusPublicacao_id")
+    @JoinColumn(name = "id_status_publicacao")
     private StatusPublicacao statusPublicacao;
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
 	public Publicacao() {}

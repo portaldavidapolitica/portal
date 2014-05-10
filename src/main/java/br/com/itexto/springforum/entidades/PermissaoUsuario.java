@@ -27,7 +27,7 @@ public class PermissaoUsuario  implements GrantedAuthority, java.io.Serializable
 	
 	@Column(name="role", nullable=false, length=64)
 	private String role;
-	@ManyToOne @JoinColumn(name="usuario_id", nullable=false)
+	@ManyToOne @JoinColumn(name="id_usuario", nullable=false)
 	private Usuario usuario;
 	
 	public String getRole() {return role;}
