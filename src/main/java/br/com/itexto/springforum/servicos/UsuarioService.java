@@ -1,19 +1,11 @@
 package br.com.itexto.springforum.servicos;
 
-import org.springframework.security.access.annotation.Secured;
-
-import br.com.itexto.springforum.entidades.Usuario;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class UsuarioService {
-	// Usando SpEL
-	@Secured("hasRole('ROLE_ADMIN')")
-	public void banir(Usuario usuario) {
-		
+	
+	public String getNomeUsuarioLogado() {
+		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
-	// Passando uma lista de permissões
-	@Secured({"ROLE_ADMIN", "ROLE_MODERADOR"})
-	public void advertir(Usuario usuario, String mensagem) {
-		
-	}
-
+    
 }

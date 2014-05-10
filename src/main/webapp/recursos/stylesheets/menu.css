@@ -4,6 +4,7 @@
     margin: 0 !important;
     padding: 0 !important;
     list-style: none !important;
+    font-weight: bold !important;
 }
 #side-nav li {
     display: block !important;
@@ -16,15 +17,14 @@
 #side-nav li a {
     display: block !important;
     text-decoration: none !important;
-    color: #ffffff !important;
-    border-top: 1px solid #ffffff !important;
+    color: white !important;
     padding: 5px 15px 5px 15px !important;
-    background: #1e7c9a !important;
+    background: #48762A !important;
     margin-left: 1px !important;
     white-space: nowrap !important;
 }
 #side-nav li a:hover {
-background: #3b3b3b !important;
+background: #48762A !important;
 }
 #side-nav li:hover ul {
     display: block !important;
@@ -34,7 +34,7 @@ background: #3b3b3b !important;
     float: none !important;
     font-size: 11px !important;
 }
-#side-nav li:hover a { background: #3b3b3b !important; }
+#side-nav li:hover a { background: #48762A !important; }
 #side-nav li:hover li a:hover {
-    background: #1e7c9a !important;
+    background: #48762A !important;
 }

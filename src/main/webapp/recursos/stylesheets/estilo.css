@@ -26,3 +26,9 @@
 	font-weight: normal;
 	padding: 0.2em;
 }
+
+.tableBorder{
+	border: none !important;
+}
+
+
