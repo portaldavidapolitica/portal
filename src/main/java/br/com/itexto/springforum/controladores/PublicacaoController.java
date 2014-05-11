@@ -20,6 +20,7 @@ import br.com.itexto.springforum.dao.DAOUsuario;
 import br.com.itexto.springforum.entidades.Politico;
 import br.com.itexto.springforum.entidades.Publicacao;
 import br.com.itexto.springforum.entidades.Usuario;
+import br.com.itexto.springforum.servicos.UsuarioService;
 
 @Controller
 public class PublicacaoController {

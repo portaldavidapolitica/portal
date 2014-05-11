@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.itexto.springforum.Enum.EnumPoliticoAcao;
 import br.com.itexto.springforum.Enum.EnumStatusPolitico;
 import br.com.itexto.springforum.dao.DAOPartido;
 import br.com.itexto.springforum.dao.DAOPolitico;
@@ -166,4 +167,8 @@ public class PoliticoController {
 		return gerenciar(mav);
 	}
 
+	private void gravaLogPartido(EnumPoliticoAcao acao, Politico politico){
+		
+	}
+	
 }

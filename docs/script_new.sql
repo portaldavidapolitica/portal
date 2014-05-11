@@ -39,37 +39,41 @@ foreign key(id_partido) references partido(id)
 );
 
 create table acao(
-id int not null auto_increment,
+id_acao int not null auto_increment,
 nome varchar(100),
-primary key(id)
+primary key(id_acao)
 );
 
 create table partido_acao(
-id int not null auto_increment,
+id_partido_acao int not null auto_increment,
+id_partido int,
 id_acao int,
 id_usuario_inclusao int,
 id_usuario_alteracao int,
 txt_valor_antigo varchar(50),
 txt_valor_novo varchar(50),
 dat_acao datetime,
-primary key(id),
+primary key(id_partido_acao),
+foreign key(id_partido) references partido(id),
 foreign key(id_usuario_inclusao) references usuario(id),
 foreign key(id_usuario_alteracao) references usuario(id),
-foreign key(id_acao) references acao(id)
+foreign key(id_acao) references acao(id_acao)
 );
 
 create table politico_acao(
-id int not null auto_increment,
+id_politico_acao int not null auto_increment,
+id_politico int,
 id_acao int,
 id_usuario_inclusao int,
 id_usuario_alteracao int,
 txt_valor_antigo varchar(50),
 txt_valor_novo varchar(50),
 dat_acao datetime,
-primary key(id),
+primary key(id_politico_acao),
+foreign key(id_politico) references politico(id),
 foreign key(id_usuario_inclusao) references usuario(id),
 foreign key(id_usuario_alteracao) references usuario(id),
-foreign key(id_acao) references acao(id)
+foreign key(id_acao) references acao(id_acao)
 );
 
 create table status_publicacao(

@@ -12,7 +12,8 @@
 			authentication-failure-url="/"
 			login-page="/"
 			default-target-url="/"/>
-		<security:intercept-url pattern="/post/publicar/**" access="hasRole('ROLE_MEMBRO')"/>
+		
+		<security:intercept-url pattern="publicacao/publicar" access="hasAnyRole('ROLE_MEMBRO','ROLE_MODERADOR','ROLE_ADMIN')"/>
 		<security:intercept-url pattern="/gerenciar/**" access="hasAnyRole('ROLE_MODERADOR','ROLE_ADMIN')"/>
 		<!-- 
 		<security:intercept-url pattern="/**" access="isAnonymous()"/>

@@ -35,44 +35,36 @@
 
 	<definition name="cadastro/partido" extends="main">
 		<put-attribute name="conteudo" value="/views/cadastro/partido.jsp" />
-		<put-attribute name="titulo" value="Detalhes do usuário" />
 	</definition>
 
 	<definition name="cadastro/politico" extends="main">
 		<put-attribute name="conteudo" value="/views/cadastro/politico.jsp" />
-		<put-attribute name="titulo" value="Bem vindo(a)!" />
 	</definition>
 
 	<definition name="gerenciamento/gerenciarUsuarios" extends="main">
 		<put-attribute name="conteudo"
 			value="/views/gerenciamento/gerenciarUsuarios.jsp" />
-		<put-attribute name="titulo" value="Gerenciamento de Usuarios" />
 	</definition>
 
 	<definition name="publicacao/listarPublicacoes" extends="main">
 		<put-attribute name="conteudo"
 			value="/views/publicacao/listarPublicacoes.jsp" />
-		<put-attribute name="titulo" value="Lista de Publicacoes" />
 	</definition>
 
 	<definition name="publicacao/publicar" extends="main">
 		<put-attribute name="conteudo" value="/views/publicacao/publicar.jsp" />
-		<put-attribute name="titulo" value="Cadastro de Publicacoes" />
 	</definition>
 
 	<definition name="publicacao/gerenciarPublicacoes" extends="main">
 		<put-attribute name="conteudo" value="/views/publicacao/gerenciarPublicacoes.jsp" />
-		<put-attribute name="titulo" value="Gerenciar Publicacoes" />
 	</definition>
 	
 	<definition name="partido/gerenciarPartidos" extends="main">
 		<put-attribute name="conteudo" value="/views/partido/gerenciarPartidos.jsp" />
-		<put-attribute name="titulo" value="Gerenciar Partidos" />
 	</definition>
 	
 	<definition name="politico/gerenciarPoliticos" extends="main">
 		<put-attribute name="conteudo" value="/views/politico/gerenciarPoliticos.jsp" />
-		<put-attribute name="titulo" value="Gerenciar Politicos" />
 	</definition>
 	
 </tiles-definitions>

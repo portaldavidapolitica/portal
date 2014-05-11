@@ -131,17 +131,17 @@
 								access="hasAnyRole('ROLE_MEMBRO','ROLE_MODERADOR','ROLE_ADMIN')">
 								<tr style="background: white">
 									<td><b><c:out value="Nome: " /></b></td>
-									<td><input name="nome" value="${nome}" class="four" /></td>
+									<td><input name="nome" value="${nome}" style="width:200px" /></td>
 								</tr>
 								<tr style="background: white">
 									<td><b><c:out value="Partido: " /></b></td>
-									<td><select name="id_partido">
+									<td><select name="id_partido" style="width:85px">
 											<option value="" selected><c:out
-													value="Selecione um Elemento" /></option>
+													value="Selecione" /></option>
 											<c:forEach var="item" items="${partidos}">
 												<option value="${item.id}"
 													<c:if test="${item.id eq idPartido}">selected</c:if>>
-													<c:out value="${item.nome}" />
+													<c:out value="${item.sigla}" />
 												</option>
 											</c:forEach>
 									</select></td>
@@ -176,7 +176,7 @@
 										<c:forEach var="lista" items="${politicos}">
 											<tr style="background: white">
 												<td><c:out value="${lista.nome}" /></td>
-												<td><c:out value="${lista.partido.nome}" /></td>
+												<td><c:out value="${lista.partido.sigla}" /></td>
 												<sec:authorize
 													access="hasAnyRole('ROLE_MEMBRO','ROLE_MODERADOR','ROLE_ADMIN')">
 													<td><a
