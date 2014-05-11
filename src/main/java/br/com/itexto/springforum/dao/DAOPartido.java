@@ -11,4 +11,6 @@ public interface DAOPartido extends DAOBase<Partido> {
 	Partido getPartidoPorSigla(String sigla);
 	
 	List<Partido> getPartidosAprovados();
+
+	List<Partido> getPartidosEmAprovacao();
 }

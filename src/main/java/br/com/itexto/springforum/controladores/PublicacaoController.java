@@ -20,7 +20,6 @@ import br.com.itexto.springforum.dao.DAOUsuario;
 import br.com.itexto.springforum.entidades.Politico;
 import br.com.itexto.springforum.entidades.Publicacao;
 import br.com.itexto.springforum.entidades.Usuario;
-import br.com.itexto.springforum.servicos.UsuarioService;
 
 @Controller
 public class PublicacaoController {
@@ -74,7 +73,8 @@ public class PublicacaoController {
 	public ModelAndView gerenciar(ModelAndView mav) {
 
 		if (mav.getModelMap().get("publicacoes") == null) {
-			mav.addObject("publicacoes", daoPublicacao.list(0, 200));
+			mav.addObject("publicacoes",
+					daoPublicacao.getPublicacoesAguardandoAprovacao());
 		}
 
 		mav.setViewName("publicacao/gerenciarPublicacoes");
@@ -97,33 +97,36 @@ public class PublicacaoController {
 		return publicacoes(mav);
 	}
 
-	@RequestMapping(value = "publicacao/pesquisar")
+	@RequestMapping(value = "publicacao/pesquisar/{id}")
 	public ModelAndView pesquisar(
-			@RequestParam(value = "nomePolitico") String nomePolitico,
-			@RequestParam(value = "id_partido") String id_partido) {
+			@RequestParam(value = "nomePolitico", required = false) String nomePolitico,
+			@PathVariable("id") Long id_partido) {
 
 		ModelAndView mav = new ModelAndView();
 		Politico politico = new Politico();
-		List<Politico> listaPolitico = new ArrayList<Politico>();
-
-		if ((!nomePolitico.equals("") && nomePolitico != null)
-				&& (!id_partido.equals("") && id_partido != null)) {
+        List<Politico> listaPolitico = new ArrayList<Politico>();
+		
+		if ((!nomePolitico.equals("") && nomePolitico != null) && id_partido != 0) {
 			politico = daoPolitico.getPoliticoPorNomeEPartido(nomePolitico,
-					Long.parseLong(id_partido));
+					id_partido);
+			listaPolitico.add(politico);
+			mav.addObject("politico", listaPolitico);
 		} else if (!nomePolitico.equals("") && nomePolitico != null) {
 			politico = daoPolitico.getPoliticoPorNome(nomePolitico);
-		} else if (!id_partido.equals("") && id_partido != null) {
-			listaPolitico = daoPolitico.getPoliticosPorPartido(daoPartido
-					.get(Long.parseLong(id_partido)));
-		}
-
-		if (listaPolitico.size() == 0) {
 			listaPolitico.add(politico);
+			mav.addObject("politico", listaPolitico);
+		} else if (id_partido != 0) {
+			listaPolitico = daoPolitico.getPoliticosPorPartido(daoPartido
+					.get(id_partido));
+			mav.addObject("politico", listaPolitico);
 		}
 
+		if(listaPolitico.size() == 0){
+			mav.addObject("mensagem", "Não foi encontrado nenhum politico com esses dados");
+		}
+		
 		mav.addObject("nomePolitico", nomePolitico);
 		mav.addObject("id_partido", id_partido);
-		mav.addObject("politico", listaPolitico);
 		return publicacoes(mav);
 	}
 

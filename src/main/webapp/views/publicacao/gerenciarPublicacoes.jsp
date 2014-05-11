@@ -37,6 +37,8 @@
 										value="Cadastro Partido" /></a></li>
 							<li><a href="../cadastro/politico"><c:out
 										value="Cadastro Politico" /></a></li>
+							<li><a href="<c:url value="../publicacao"/>"><c:out
+										value="Cadastro de Publicacoes" /></a></li>
 						</ul></li>
 				</sec:authorize>
 
@@ -75,7 +77,6 @@
 						<c:when test="${fn:length(publicacoes) gt 0}">
 							<tr>
 								<td><b><c:out value="Titulo" /></b></td>
-								<td><b><c:out value="Texto" /></b></td>
 								<td><b><c:out value="Politico" /></b></td>
 								<td><b><c:out value="Partido" /></b></td>
 								<td><b><c:out value="Status" /></b></td>
@@ -85,13 +86,14 @@
 									<td style="background: white"><c:out
 											value="${lista.titulo}" /></td>
 									<td style="background: white"><c:out
-											value="${lista.texto}" /></td>
-									<td style="background: white"><c:out
 											value="${lista.politico.nome}" /></td>
 									<td style="background: white"><c:out
-											value="${lista.politico.partido.nome}" /></td>
+											value="${lista.politico.partido.sigla}" /></td>
 									<td style="background: white"><c:out
 											value="${lista.statusPublicacao.nome}" /></td>
+									<td style="background: white"><a
+										href="/portal/publicacao/visualizar/${lista.id}"><c:out
+												value="Visualizar Publicacao" /></a></td>
 									<td style="background: white"><a
 										href="/portal/publicacao/gerenciarPublicacoes/aprovar/${lista.id}"><c:out
 												value="Aprovar Publicacao" /></a></td>
@@ -103,7 +105,8 @@
 						</c:when>
 						<c:otherwise>
 							<tr>
-								<td><c:out value="Não existem publicações cadastradas" /></td>
+								<td><c:out
+										value="Não existem publicações cadastradas ou para serem aprovadas" /></td>
 							</tr>
 						</c:otherwise>
 					</c:choose>

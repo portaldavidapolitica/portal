@@ -38,6 +38,8 @@
 												value="Cadastro Partido" /></a></li>
 									<li><a href="../cadastro/politico"><c:out
 												value="Cadastro Politico" /></a></li>
+									<li><a href="<c:url value="../publicacao"/>"><c:out
+												value="Cadastro de Publicacoes" /></a></li>
 								</ul></li>
 						</sec:authorize>
 
@@ -84,6 +86,8 @@
 												value="Cadastro Partido" /></a></li>
 									<li><a href="../../../cadastro/politico"><c:out
 												value="Cadastro Politico" /></a></li>
+									<li><a href="<c:url value="../../../publicacao"/>"><c:out
+												value="Cadastro de Publicacoes" /></a></li>
 								</ul></li>
 						</sec:authorize>
 

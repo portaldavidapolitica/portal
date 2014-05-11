@@ -13,8 +13,7 @@
 							<li><a
 								href="<c:url value="publicacao/gerenciarPublicacoes"/>"><c:out
 										value="Gerenciar Publicacoes" /></a></li>
-							<li><a
-								href="<c:url value="politico/gerenciarPoliticos"/>"><c:out
+							<li><a href="<c:url value="politico/gerenciarPoliticos"/>"><c:out
 										value="Gerenciar Politicos" /></a></li>
 							<li><a href="<c:url value="partido/gerenciarPartidos"/>"><c:out
 										value="Gerenciar Partidos" /></a></li>
@@ -32,6 +31,8 @@
 										value="Cadastro Partido" /></a></li>
 							<li><a href="cadastro/politico"><c:out
 										value="Cadastro Politico" /></a></li>
+							<li><a href="<c:url value="publicacao"/>"><c:out
+										value="Cadastro de Publicacoes" /></a></li>
 						</ul></li>
 				</sec:authorize>
 

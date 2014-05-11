@@ -55,7 +55,7 @@ public class PoliticoController {
 	public ModelAndView gerenciar(ModelAndView mav) {
 
 		if (mav.getModelMap().get("politicos") == null) {
-			mav.addObject("politicos", daoPolitico.list(0, 200));
+			mav.addObject("politicos", daoPolitico.getPoliticosEmAprovacao());
 		}
 
 		mav.setViewName("politico/gerenciarPoliticos");

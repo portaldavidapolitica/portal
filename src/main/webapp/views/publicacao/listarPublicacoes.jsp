@@ -14,15 +14,16 @@
 					<li><a href="#">Gerenciamento</a>
 						<ul>
 							<li><a
-								href="<c:url value="../portal/publicacao/gerenciarPublicacoes"/>"><c:out
+								href="<c:url value="/publicacao/gerenciarPublicacoes"/>"><c:out
 										value="Gerenciar Publicacoes" /></a></li>
 							<li><a
-								href="<c:url value="../portal/politico/gerenciarPoliticos"/>"><c:out
+								href="<c:url value="/politico/gerenciarPoliticos"/>"><c:out
 										value="Gerenciar Politicos" /></a></li>
-							<li><a href="<c:url value="../portal/partido/gerenciarPartidos"/>"><c:out
+							<li><a
+								href="<c:url value="/partido/gerenciarPartidos"/>"><c:out
 										value="Gerenciar Partidos" /></a></li>
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
-								<li><a href="<c:url value="../portal/gerenciar/usuarios"/>"><c:out
+								<li><a href="<c:url value="/gerenciar/usuarios"/>"><c:out
 											value="Gerenciar Usuarios" /></a></li>
 							</sec:authorize>
 						</ul></li>
@@ -32,20 +33,22 @@
 					access="hasAnyRole('ROLE_MEMBRO','ROLE_MODERADOR','ROLE_ADMIN')">
 					<li><a href="#">Cadastros</a>
 						<ul>
-							<li><a href="<c:url value="cadastro/partido"/>"><c:out
+							<li><a href="<c:url value="/cadastro/partido"/>"><c:out
 										value="Cadastro Partido" /></a></li>
-							<li><a href="cadastro/politico"><c:out
+							<li><a href="/cadastro/politico"><c:out
 										value="Cadastro Politico" /></a></li>
+							<li><a href="<c:url value="/publicacao"/>"><c:out
+										value="Cadastro de Publicacoes" /></a></li>
 						</ul></li>
 				</sec:authorize>
 
 				<li><a href="#">Consulta</a>
 					<ul>
-						<li><a href="cadastro/politico"><c:out
+						<li><a href="/cadastro/politico"><c:out
 									value="Consulta Politicos" /></a></li>
-						<li><a href="<c:url value="cadastro/partido"/>"><c:out
+						<li><a href="<c:url value="/cadastro/partido"/>"><c:out
 									value="Consulta Partidos" /></a></li>
-						<li><a href="<c:url value="publicacao"/>"><c:out
+						<li><a href="<c:url value="/publicacao"/>"><c:out
 									value="Consulta de Publicacoes" /></a></li>
 					</ul>
 				<li>
@@ -69,6 +72,7 @@
 		<sf:form name="frmListaPublicacao">
 
 			<input type="hidden" name="msg" value="${mensagem}" />
+			<input type="hidden" name="polit" value="${politico}" />
 			<sec:authorize ifAnyGranted="ROLE_MEMBRO,ROLE_ADMIN">
 				<center>
 					<table class="tableBorder">
@@ -77,21 +81,19 @@
 							<td><b><c:out value="Partido" /></b></td>
 						</tr>
 						<tr style="background: white">
-							<td><input name="nomePolitico" value="${nomePolitico}" /></td>
-							<td width="300px"><select name="id_partido">
-									<option value="" selected><c:out
-											value="Selecione um Elemento" /></option>
+							<td><input name="nomePolitico" value="${nomePolitico}"
+								style="width: 200px" /></td>
+							<td><select name="id_partido" style="width: 85px">
+									<option value="" selected><c:out value="Selecione" /></option>
 									<c:forEach var="item" items="${partidos}">
 										<option value="${item.id}"
 											<c:if test="${item.id eq id_partido}">selected</c:if>>
-											<c:out value="${item.nome}" />
+											<c:out value="${item.sigla}" />
 										</option>
 									</c:forEach>
 							</select></td>
-							<td><a href="/portal/publicacao/pesquisar"><c:out
+							<td><a href="#" onclick="javascript:pesquisar();" ><c:out
 										value="Pesquisar Politico" /></a></td>
-							<td><a href="/portal/publicacao/procurar/publicacoes"><c:out
-										value="Procurar Publicacoes" /></a></td>
 						</tr>
 
 						<c:if test="${!empty politico}">
@@ -102,7 +104,7 @@
 							<c:forEach var="listaPolitico" items="${politico}">
 								<tr style="background: white">
 									<td><c:out value="${listaPolitico.nome}" /></td>
-									<td><c:out value="${listaPolitico.partido.nome}" /></td>
+									<td><c:out value="${listaPolitico.partido.sigla}" /></td>
 									<td><a
 										href="/portal/publicacao/publicar/${listaPolitico.nome},${listaPolitico.partido.id}"><c:out
 												value="Fazer Publicacao" /></a></td>
@@ -152,10 +154,6 @@
 	</div>
 </div>
 
-<script type="text/javascript">
-	$(function() {
-		if ($('[name=msg]').val() != '') {
-			alert($('[name=msg]').val());
-		}
-	});
+<script type="text/javascript" src="<c:url value="/recursos/javascripts/publicacao_functions.js"/>">
+	
 </script>

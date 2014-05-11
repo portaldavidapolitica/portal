@@ -42,4 +42,12 @@ public class HBPartido extends HBDAO<Partido> implements DAOPartido {
 		return query.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Partido> getPartidosEmAprovacao() {
+		Query query = getSession().createQuery("from Partido p where p.statusPartido.idStatusPartido = ?");
+		query.setInteger(0, EnumStatusPartido.AGUARDANDO_APROVACAO.getAcao());
+		return query.list();
+	}
+	
 }

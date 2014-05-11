@@ -39,6 +39,8 @@
 												value="Cadastro Partido" /></a></li>
 									<li><a href="../cadastro/politico"><c:out
 												value="Cadastro Politico" /></a></li>
+									<li><a href="<c:url value="../publicacao"/>"><c:out
+												value="Cadastro de Publicacoes" /></a></li>
 								</ul></li>
 						</sec:authorize>
 
@@ -86,6 +88,8 @@
 												value="Cadastro Partido" /></a></li>
 									<li><a href="../../../cadastro/politico"><c:out
 												value="Cadastro Politico" /></a></li>
+									<li><a href="<c:url value="../../../publicacao"/>"><c:out
+												value="Cadastro de Publicacoes" /></a></li>
 								</ul></li>
 						</sec:authorize>
 
@@ -131,13 +135,13 @@
 								access="hasAnyRole('ROLE_MEMBRO','ROLE_MODERADOR','ROLE_ADMIN')">
 								<tr style="background: white">
 									<td><b><c:out value="Nome: " /></b></td>
-									<td><input name="nome" value="${nome}" style="width:200px" /></td>
+									<td><input name="nome" value="${nome}"
+										style="width: 200px" /></td>
 								</tr>
 								<tr style="background: white">
 									<td><b><c:out value="Partido: " /></b></td>
-									<td><select name="id_partido" style="width:85px">
-											<option value="" selected><c:out
-													value="Selecione" /></option>
+									<td><select name="id_partido" style="width: 85px">
+											<option value="" selected><c:out value="Selecione" /></option>
 											<c:forEach var="item" items="${partidos}">
 												<option value="${item.id}"
 													<c:if test="${item.id eq idPartido}">selected</c:if>>

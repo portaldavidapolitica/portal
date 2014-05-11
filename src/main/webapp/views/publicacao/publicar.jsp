@@ -19,7 +19,8 @@
 							<li><a
 								href="<c:url value="../../politico/gerenciarPoliticos"/>"><c:out
 										value="Gerenciar Politicos" /></a></li>
-							<li><a href="<c:url value="../../partido/gerenciarPartidos"/>"><c:out
+							<li><a
+								href="<c:url value="../../partido/gerenciarPartidos"/>"><c:out
 										value="Gerenciar Partidos" /></a></li>
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
 								<li><a href="<c:url value="../../gerenciar/usuarios"/>"><c:out
@@ -36,6 +37,8 @@
 										value="Cadastro Partido" /></a></li>
 							<li><a href="../../cadastro/politico"><c:out
 										value="Cadastro Politico" /></a></li>
+							<li><a href="<c:url value="../../publicacao"/>"><c:out
+										value="Cadastro de Publicacoes" /></a></li>
 						</ul></li>
 				</sec:authorize>
 
@@ -56,7 +59,7 @@
 
 <div class="row">
 	<div class="twelve columns" style="position: inherit; z-index: -1;">
-		<sf:form name="frmPublicar" action="cadastrar">
+		<sf:form name="frmPublicar" action="../cadastrar">
 
 			<input type="hidden" name="acao" value="${acao}" />
 			<input type="hidden" name="nomePolitico"
@@ -69,7 +72,7 @@
 			<br />
 
 			<center>
-				<b><c:out value="Cadastrar Publicação" /></b>
+				<b><c:out value="Publicação" /></b>
 			</center>
 
 			<br />
@@ -79,11 +82,25 @@
 				<table class="tableBorder">
 					<tr style="background: white">
 						<td><b><c:out value="Titulo: " /></b></td>
-						<td><input name="titulo" value="${publicacao.titulo}" /></td>
+						<c:choose>
+							<c:when test="${acao eq 'editar'}">
+								<td><c:out value="${publicacao.titulo}" /></td>
+							</c:when>
+							<c:otherwise>
+								<td><input name="titulo" value="${publicacao.titulo}" /></td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
 					<tr style="background: white">
 						<td><b><c:out value="Texto: " /></b></td>
-						<td><textarea name="texto" cols="100" rows="10">${publicacao.texto}</textarea></td>
+						<c:choose>
+							<c:when test="${acao eq 'editar'}">
+								<td><c:out value="${publicacao.texto}" /></td>
+							</c:when>
+							<c:otherwise>
+								<td><textarea name="texto" cols="100" rows="10">${publicacao.texto}</textarea></td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
 					<tr style="background: white">
 						<td><b><c:out value="Politico: " /></b></td>
@@ -105,12 +122,6 @@
 					</c:if>
 				</table>
 			</center>
-
-			<br />
-			<br />
-
-			<a href="/portal/publicacao">Voltar</a>
-
 		</sf:form>
 	</div>
 </div>

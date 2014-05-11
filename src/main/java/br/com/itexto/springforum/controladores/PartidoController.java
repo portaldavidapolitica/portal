@@ -54,7 +54,7 @@ public class PartidoController {
 	public ModelAndView gerenciar(ModelAndView mav) {
 
 		if (mav.getModelMap().get("partidos") == null) {
-			mav.addObject("partidos", daoPartido.list(0, 200));
+			mav.addObject("partidos", daoPartido.getPartidosEmAprovacao());
 		}
 
 		mav.setViewName("partido/gerenciarPartidos");
