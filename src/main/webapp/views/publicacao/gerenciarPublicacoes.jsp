@@ -92,7 +92,7 @@
 									<td style="background: white"><c:out
 											value="${lista.statusPublicacao.nome}" /></td>
 									<td style="background: white"><a
-										href="/portal/publicacao/visualizar/${lista.id}"><c:out
+										href="/portal/publicacao/visualizarPublicacao/${lista.id}"><c:out
 												value="Visualizar Publicacao" /></a></td>
 									<td style="background: white"><a
 										href="/portal/publicacao/gerenciarPublicacoes/aprovar/${lista.id}"><c:out

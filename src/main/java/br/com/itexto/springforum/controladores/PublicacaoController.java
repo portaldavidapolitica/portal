@@ -104,9 +104,10 @@ public class PublicacaoController {
 
 		ModelAndView mav = new ModelAndView();
 		Politico politico = new Politico();
-        List<Politico> listaPolitico = new ArrayList<Politico>();
-		
-		if ((!nomePolitico.equals("") && nomePolitico != null) && id_partido != 0) {
+		List<Politico> listaPolitico = new ArrayList<Politico>();
+
+		if ((!nomePolitico.equals("") && nomePolitico != null)
+				&& id_partido != 0) {
 			politico = daoPolitico.getPoliticoPorNomeEPartido(nomePolitico,
 					id_partido);
 			listaPolitico.add(politico);
@@ -121,10 +122,11 @@ public class PublicacaoController {
 			mav.addObject("politico", listaPolitico);
 		}
 
-		if(listaPolitico.size() == 0){
-			mav.addObject("mensagem", "Não foi encontrado nenhum politico com esses dados");
+		if (listaPolitico.size() == 0) {
+			mav.addObject("mensagem",
+					"Não foi encontrado nenhum politico com esses dados");
 		}
-		
+
 		mav.addObject("nomePolitico", nomePolitico);
 		mav.addObject("id_partido", id_partido);
 		return publicacoes(mav);
@@ -145,9 +147,25 @@ public class PublicacaoController {
 	@RequestMapping(value = "publicacao/visualizar/{id}")
 	public ModelAndView visualizar(@PathVariable("id") Long id) {
 		ModelAndView mav = new ModelAndView();
+		List<Publicacao> publicacoes = daoPublicacao
+				.getPublicacoesPorIdPolitico(id);
+
+		if (publicacoes.size() == 0) {
+			mav.addObject("publicacao", daoPolitico.get(id));
+		} else {
+			mav.addObject("publicacoes", publicacoes);
+		}
+
+		mav.addObject("acao", "editar");
+		return publicar(mav);
+	}
+
+	@RequestMapping(value = "publicacao/visualizarPublicacao/{id}")
+	public ModelAndView visualizarPublicacao(@PathVariable("id") Long id) {
+		ModelAndView mav = new ModelAndView();
 		Publicacao publicacao = daoPublicacao.get(id);
 		mav.addObject("publicacao", publicacao);
-		mav.addObject("acao", "editar");
+		mav.addObject("acao", "visualizar");
 		return publicar(mav);
 	}
 

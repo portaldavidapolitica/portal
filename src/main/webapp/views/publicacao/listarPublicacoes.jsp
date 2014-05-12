@@ -124,17 +124,15 @@
 									<td><b><c:out value="Publicacoes Cadastradas" /></b></td>
 								</tr>
 								<tr style="background: white">
-									<td><b><c:out value="Titulo" /></b></td>
 									<td><b><c:out value="Politico" /></b></td>
 									<td><b><c:out value="Partido" /></b></td>
 								</tr>
 								<c:forEach var="lista" items="${publicacoes}">
 									<tr style="background: white">
-										<td><c:out value="${lista.titulo}" /></td>
 										<td><c:out value="${lista.politico.nome}" /></td>
-										<td><c:out value="${lista.politico.partido.nome}" /></td>
-										<td><a href="/portal/publicacao/visualizar/${lista.id}"><c:out
-													value="Visualizar Publicacao" /></a></td>
+										<td><c:out value="${lista.politico.partido.sigla}" /></td>
+										<td><a href="/portal/publicacao/visualizar/${lista.politico.id}"><c:out
+													value="Visualizar Publicações" /></a></td>
 									</tr>
 								</c:forEach>
 							</table>

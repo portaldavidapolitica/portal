@@ -10,16 +10,10 @@ function valida(){
 	} else {
 		$('[name=frmPublicar]').attr(
 				"action",
-				'/portal/publicacao/publicar/cadastrar');
+				'/portal/publicacao/cadastrar');
 		$('[name=frmPublicar]').submit();
 	}
 }
-
-$(function(){
-	if($('[name=msg]').val() != ''){
-		alert($('[name=msg]').val());	
-	}
-});
 
 
 

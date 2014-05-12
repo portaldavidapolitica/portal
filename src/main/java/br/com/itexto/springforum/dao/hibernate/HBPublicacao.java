@@ -56,7 +56,7 @@ public class HBPublicacao extends HBDAO<Publicacao> implements DAOPublicacao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Publicacao> getPublicacoesAprovadas() {
-		String sql = "select pub from Publicacao pub where pub.statusPublicacao.id = ?";
+		String sql = "select pub from Publicacao pub where pub.statusPublicacao.id = ? group by pub.politico.id";
 		Query query = getSession().createQuery(sql.toString());
 		query.setLong(0, EnumStatusPublicacao.APROVADO.getAcao());
 		return query.list();
@@ -68,6 +68,16 @@ public class HBPublicacao extends HBDAO<Publicacao> implements DAOPublicacao {
 		String sql = "select pub from Publicacao pub where pub.statusPublicacao.id = ?";
 		Query query = getSession().createQuery(sql.toString());
 		query.setLong(0, EnumStatusPublicacao.AGUARDANDO_APROVACAO.getAcao());
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Publicacao> getPublicacoesPorIdPolitico(Long idPolitico) {
+		String sql = "select pub from Publicacao pub where pub.politico.id = ? and pub.statusPublicacao.id = ?";
+        Query query = getSession().createQuery(sql.toString());
+		query.setLong(0, idPolitico);
+		query.setLong(1, EnumStatusPublicacao.APROVADO.getAcao());
 		return query.list();
 	}
 

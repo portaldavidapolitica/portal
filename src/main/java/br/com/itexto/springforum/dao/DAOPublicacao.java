@@ -11,4 +11,6 @@ public interface DAOPublicacao extends DAOBase<Publicacao> {
     List<Publicacao> getPublicacoesAprovadas();
     
     List<Publicacao> getPublicacoesAguardandoAprovacao();
+    
+    List<Publicacao> getPublicacoesPorIdPolitico(Long idPolitico);
 }
