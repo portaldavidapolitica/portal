@@ -40,11 +40,10 @@ public class PublicacaoController {
 	private DAOUsuario daoUsuario;
 
 	@RequestMapping("/publicacao")
-	public ModelAndView publicacoes(ModelAndView mav) {
+	public ModelAndView publicacoes(final ModelAndView mav) {
 
 		if (mav.getModelMap().get("publicacoes") == null) {
-			mav.addObject("publicacoes",
-					daoPublicacao.getPublicacoesAprovadas());
+			mav.addObject("publicacoes", daoPublicacao.getPublicacoesAprovadas());
 		}
 
 		if (mav.getModelMap().get("partidos") == null) {
@@ -56,7 +55,7 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping("publicacao/publicar")
-	public ModelAndView publicar(ModelAndView mav) {
+	public ModelAndView publicar(final ModelAndView mav) {
 
 		if (mav.getModelMap().get("publicacao") == null) {
 			mav.addObject("publicacao", new Publicacao());
@@ -70,11 +69,10 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping("publicacao/gerenciarPublicacoes")
-	public ModelAndView gerenciar(ModelAndView mav) {
+	public ModelAndView gerenciar(final ModelAndView mav) {
 
 		if (mav.getModelMap().get("publicacoes") == null) {
-			mav.addObject("publicacoes",
-					daoPublicacao.getPublicacoesAguardandoAprovacao());
+			mav.addObject("publicacoes", daoPublicacao.getPublicacoesAguardandoAprovacao());
 		}
 
 		mav.setViewName("publicacao/gerenciarPublicacoes");
@@ -82,13 +80,12 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(value = "publicacao/procurar/publicacoes")
-	public ModelAndView procurar(
-			@RequestParam(value = "nomePolitico") String nomePolitico,
-			@RequestParam(value = "id_partido") Long id_partido) {
+	public ModelAndView procurar(@RequestParam(value = "nomePolitico")
+	final String nomePolitico, @RequestParam(value = "id_partido")
+	final Long id_partido) {
 
-		ModelAndView mav = new ModelAndView();
-		List<Publicacao> publicacoes = daoPublicacao
-				.getPublicacoesPorPoliticoEPartido(nomePolitico, id_partido);
+		final ModelAndView mav = new ModelAndView();
+		final List<Publicacao> publicacoes = daoPublicacao.getPublicacoesPorPoliticoEPartido(nomePolitico, id_partido);
 
 		if (publicacoes.size() > 0) {
 			mav.addObject("publicacoes", publicacoes);
@@ -98,18 +95,16 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(value = "publicacao/pesquisar/{id}")
-	public ModelAndView pesquisar(
-			@RequestParam(value = "nomePolitico", required = false) String nomePolitico,
-			@PathVariable("id") Long id_partido) {
+	public ModelAndView pesquisar(@RequestParam(value = "nomePolitico", required = false)
+	final String nomePolitico, @PathVariable("id")
+	final Long id_partido) {
 
-		ModelAndView mav = new ModelAndView();
+		final ModelAndView mav = new ModelAndView();
 		Politico politico = new Politico();
 		List<Politico> listaPolitico = new ArrayList<Politico>();
 
-		if ((!nomePolitico.equals("") && nomePolitico != null)
-				&& id_partido != 0) {
-			politico = daoPolitico.getPoliticoPorNomeEPartido(nomePolitico,
-					id_partido);
+		if (!nomePolitico.equals("") && nomePolitico != null && id_partido != 0) {
+			politico = daoPolitico.getPoliticoPorNomeEPartido(nomePolitico, id_partido);
 			listaPolitico.add(politico);
 			mav.addObject("politico", listaPolitico);
 		} else if (!nomePolitico.equals("") && nomePolitico != null) {
@@ -117,14 +112,12 @@ public class PublicacaoController {
 			listaPolitico.add(politico);
 			mav.addObject("politico", listaPolitico);
 		} else if (id_partido != 0) {
-			listaPolitico = daoPolitico.getPoliticosPorPartido(daoPartido
-					.get(id_partido));
+			listaPolitico = daoPolitico.getPoliticosPorPartido(daoPartido.get(id_partido));
 			mav.addObject("politico", listaPolitico);
 		}
 
 		if (listaPolitico.size() == 0) {
-			mav.addObject("mensagem",
-					"Não foi encontrado nenhum politico com esses dados");
+			mav.addObject("mensagem", "Não foi encontrado nenhum politico com esses dados");
 		}
 
 		mav.addObject("nomePolitico", nomePolitico);
@@ -133,22 +126,22 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(value = "publicacao/publicar/{politico}")
-	public ModelAndView publicar(@PathVariable("politico") String politico) {
-		ModelAndView mav = new ModelAndView();
-		Publicacao publicacao = new Publicacao();
-		String[] politic = politico.split(",");
-		Politico pol = daoPolitico.getPoliticoPorNomeEPartido(politic[0],
-				Long.parseLong(politic[1]));
+	public ModelAndView publicar(@PathVariable("politico")
+	final String politico) {
+		final ModelAndView mav = new ModelAndView();
+		final Publicacao publicacao = new Publicacao();
+		final String[] politic = politico.split(",");
+		final Politico pol = daoPolitico.getPoliticoPorNomeEPartido(politic[0], Long.parseLong(politic[1]));
 		publicacao.setPolitico(pol);
 		mav.addObject("publicacao", publicacao);
 		return publicar(mav);
 	}
 
 	@RequestMapping(value = "publicacao/visualizar/{id}")
-	public ModelAndView visualizar(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		List<Publicacao> publicacoes = daoPublicacao
-				.getPublicacoesPorIdPolitico(id);
+	public ModelAndView visualizar(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final List<Publicacao> publicacoes = daoPublicacao.getPublicacoesPorIdPolitico(id);
 
 		if (publicacoes.size() == 0) {
 			mav.addObject("publicacao", daoPolitico.get(id));
@@ -161,42 +154,36 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(value = "publicacao/visualizarPublicacao/{id}")
-	public ModelAndView visualizarPublicacao(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		Publicacao publicacao = daoPublicacao.get(id);
+	public ModelAndView visualizarPublicacao(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final Publicacao publicacao = daoPublicacao.get(id);
 		mav.addObject("publicacao", publicacao);
 		mav.addObject("acao", "visualizar");
 		return publicar(mav);
 	}
 
 	@RequestMapping(value = "publicacao/cadastrar")
-	public ModelAndView cadastrar(
-			@RequestParam(value = "titulo") String titulo,
-			@RequestParam(value = "texto") String texto,
-			@RequestParam(value = "nomePolitico") String nomePolitico,
-			@RequestParam(value = "id_partido") Long id_partido,
-			@RequestParam(value = "acao") String acao) {
+	public ModelAndView cadastrar(@RequestParam(value = "titulo")
+	final String titulo, @RequestParam(value = "texto")
+	final String texto, @RequestParam(value = "nomePolitico")
+	final String nomePolitico, @RequestParam(value = "id_partido")
+	final Long id_partido, @RequestParam(value = "acao")
+	final String acao) {
 
-		ModelAndView mav = new ModelAndView();
-		Publicacao publicacao = new Publicacao();
+		final ModelAndView mav = new ModelAndView();
+		final Publicacao publicacao = new Publicacao();
 
 		try {
 			publicacao.setTitulo(titulo);
 			publicacao.setTexto(texto);
-			publicacao.setPolitico(daoPolitico.getPoliticoPorNomeEPartido(
-					nomePolitico, id_partido));
-			publicacao.setStatusPublicacao(daoStatusPublicacao
-					.get((long) EnumStatusPublicacao.AGUARDANDO_APROVACAO
-							.getAcao()));
-			Usuario usuario = daoUsuario.getUsuario(SecurityContextHolder
-					.getContext().getAuthentication().getName());
+			publicacao.setPolitico(daoPolitico.getPoliticoPorNome(nomePolitico));
+			publicacao.setStatusPublicacao(daoStatusPublicacao.get((long) EnumStatusPublicacao.AGUARDANDO_APROVACAO.getAcao()));
+			final Usuario usuario = daoUsuario.getUsuario(SecurityContextHolder.getContext().getAuthentication().getName());
 			publicacao.setUsuario(usuario);
 			daoPublicacao.persistir(publicacao);
-		} catch (Exception e) {
-			mav.addObject(
-					"mensagem",
-					"Erro ao salvar a publicacao, motivo do erro: "
-							+ e.getCause() + " : " + e.getMessage());
+		} catch (final Exception e) {
+			mav.addObject("mensagem", "Erro ao salvar a publicacao, motivo do erro: " + e.getCause() + " : " + e.getMessage());
 			mav.addObject("acao", acao);
 			mav.addObject("publicacao", publicacao);
 			return publicar(mav);
@@ -207,24 +194,32 @@ public class PublicacaoController {
 	}
 
 	@RequestMapping(value = "publicacao/gerenciarPublicacoes/aprovar/{id}")
-	public ModelAndView aprovarPublicacao(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		Publicacao publicacao = daoPublicacao.get(id);
-		publicacao.setStatusPublicacao(daoStatusPublicacao
-				.get((long) EnumStatusPublicacao.APROVADO.getAcao()));
-		daoPublicacao.persistir(publicacao);
-		mav.addObject("mensagem", "Publicacao aprovada com sucesso!");
+	public ModelAndView aprovarPublicacao(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final Publicacao publicacao = daoPublicacao.get(id);
+		publicacao.setStatusPublicacao(daoStatusPublicacao.get((long) EnumStatusPublicacao.APROVADO.getAcao()));
+		try {
+			daoPublicacao.persistir(publicacao);
+			mav.addObject("mensagem", "Publicacao aprovada com sucesso!");
+		} catch (final Exception e) {
+			mav.addObject("mensagem", "Houve um erro no processamento, por favor envie um email para o administrador");
+		}
 		return gerenciar(mav);
 	}
 
 	@RequestMapping(value = "publicacao/gerenciarPublicacoes/reprovar/{id}")
-	public ModelAndView reprovarPublicacao(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		Publicacao publicacao = daoPublicacao.get(id);
-		publicacao.setStatusPublicacao(daoStatusPublicacao
-				.get((long) EnumStatusPublicacao.REPROVADO.getAcao()));
-		daoPublicacao.persistir(publicacao);
-		mav.addObject("mensagem", "Publicacao reprovada com sucesso!");
+	public ModelAndView reprovarPublicacao(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final Publicacao publicacao = daoPublicacao.get(id);
+		publicacao.setStatusPublicacao(daoStatusPublicacao.get((long) EnumStatusPublicacao.REPROVADO.getAcao()));
+		try {
+			daoPublicacao.persistir(publicacao);
+			mav.addObject("mensagem", "Publicacao reprovada com sucesso!");
+		} catch (final Exception e) {
+			mav.addObject("mensagem", "Houve um erro no processamento, por favor envie um email para o administrador");
+		}
 		return gerenciar(mav);
 	}
 

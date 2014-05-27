@@ -22,13 +22,12 @@ import br.com.itexto.springforum.dao.DAOPermissaoUsuario;
 import br.com.itexto.springforum.dao.DAOTopico;
 import br.com.itexto.springforum.dao.DAOUsuario;
 import br.com.itexto.springforum.dao.mocks.MockDAOAssunto;
-//import br.com.itexto.springforum.entidades.Assunto;
+// import br.com.itexto.springforum.entidades.Assunto;
 import br.com.itexto.springforum.entidades.Usuario;
 
 @Controller
 public class HomeController {
-	
-	
+
 	@Autowired
 	private DAOUsuario daoUsuario;
 	@Autowired
@@ -37,20 +36,20 @@ public class HomeController {
 	private DAOAssunto daoAssunto;
 	@Autowired
 	private DAOPermissaoUsuario daoPermissaoUsuario;
-	
+
 	public DAOPermissaoUsuario getDaoPermissaoUsuario() {
 		return daoPermissaoUsuario;
 	}
-	
-	public void setDaoPermissaoUsuario(DAOPermissaoUsuario dao) {
+
+	public void setDaoPermissaoUsuario(final DAOPermissaoUsuario dao) {
 		daoPermissaoUsuario = dao;
 	}
-	
+
 	public DAOUsuario getDaoUsuario() {
 		return daoUsuario;
 	}
 
-	public void setDaoUsuario(DAOUsuario daoUsuario) {
+	public void setDaoUsuario(final DAOUsuario daoUsuario) {
 		this.daoUsuario = daoUsuario;
 	}
 
@@ -58,7 +57,7 @@ public class HomeController {
 		return daoTopico;
 	}
 
-	public void setDaoTopico(DAOTopico daoTopico) {
+	public void setDaoTopico(final DAOTopico daoTopico) {
 		this.daoTopico = daoTopico;
 	}
 
@@ -66,69 +65,75 @@ public class HomeController {
 		return daoAssunto;
 	}
 
-	public void setDaoAssunto(MockDAOAssunto daoAssunto) {
+	public void setDaoAssunto(final MockDAOAssunto daoAssunto) {
 		this.daoAssunto = daoAssunto;
 	}
-	
+
 	/**
 	 * A anotação @RequestMapping identifica qual a URL relacionada ao método (action)
 	 * a ser executado.
-	 * 
-	 * Neste exemplo, vemos que a URL padrão para nosso sistema, o "/" sempre apontará para 
+	 *
+	 * Neste exemplo, vemos que a URL padrão para nosso sistema, o "/" sempre apontará para
 	 * esta chamada.
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping("/")
-	public String index(Map<String, Object> model) {
-		model.put("assuntos", getDaoAssunto().list(0,100));
-		model.put("usuarios", getDaoUsuario().list(0,100));
+	public String index(final Map<String, Object> model) {
+		model.put("assuntos", getDaoAssunto().list(0, 100));
+		model.put("usuarios", getDaoUsuario().list(0, 100));
 		return "index";
 	}
-	
+
 	@RequestMapping("/registro")
-	public String registro(Map<String, Object> model) {
+	public String registro(final Map<String, Object> model) {
 		if (model.get("usuario") == null) {
-			Usuario usr = new Usuario();
-			
+			final Usuario usr = new Usuario();
+
 			model.put("usuario", usr);
 		}
 		return "registro";
 	}
-	
-	@RequestMapping(value="/executarRegistro", method=RequestMethod.POST)
-	public String executarRegistro(@Valid Usuario usuario, 
-									BindingResult bindingResult, 
-									HttpSession sessao, 
-									@RequestParam(value="avatar", required=false) MultipartFile avatar) {
+
+	@RequestMapping(value = "/executarRegistro", method = RequestMethod.POST)
+	public String executarRegistro(@Valid
+	final Usuario usuario, final BindingResult bindingResult, final HttpSession sessao, @RequestParam(value = "avatar", required = false)
+	final MultipartFile avatar) {
 		if (bindingResult.hasErrors()) {
-			Map<String, Object> model = new HashMap<String, Object>();
+			final Map<String, Object> model = new HashMap<String, Object>();
 			model.put("usuario", usuario);
 			return registro(model);
 		}
-		getDaoUsuario().persistir(usuario);
-		getDaoPermissaoUsuario().addRole("ROLE_MEMBRO", usuario);
-		if (! avatar.isEmpty()) {
-			processarAvatar(usuario, avatar);
+		try {
+			getDaoUsuario().persistir(usuario);
+			getDaoPermissaoUsuario().addRole("ROLE_MEMBRO", usuario);
+			if (!avatar.isEmpty()) {
+				processarAvatar(usuario, avatar);
+			}
+
+			sessao.setAttribute("usuario", usuario);
+			return "redirect:/";
+		} catch (final Exception e) {
+			final Map<String, Object> model = new HashMap<String, Object>();
+			bindingResult.rejectValue("login", "error.usuario", "Este login j� est� sendo utilizado.");
+			return registro(model);
 		}
-		
-		sessao.setAttribute("usuario", usuario);
-		return "redirect:/";
+
 	}
-	
-	private void processarAvatar(Usuario usuario, MultipartFile avatar) {
-		File diretorio = new File("/springForum/avatares");
-		if (! diretorio.exists()) {
+
+	private void processarAvatar(final Usuario usuario, final MultipartFile avatar) {
+		final File diretorio = new File("/springForum/avatares");
+		if (!diretorio.exists()) {
 			diretorio.mkdirs();
 		}
-			try {
-				FileOutputStream arquivo = new FileOutputStream(diretorio.getAbsolutePath() + "/" + usuario.getLogin() + ".png");
-				arquivo.write(avatar.getBytes());
-				arquivo.close();
-			} catch (IOException ex) {
-				
-			}
-		
+		try {
+			final FileOutputStream arquivo = new FileOutputStream(diretorio.getAbsolutePath() + "/" + usuario.getLogin() + ".png");
+			arquivo.write(avatar.getBytes());
+			arquivo.close();
+		} catch (final IOException ex) {
+
+		}
+
 	}
-	
+
 }

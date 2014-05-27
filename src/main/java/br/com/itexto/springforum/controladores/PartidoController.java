@@ -1,6 +1,6 @@
 package br.com.itexto.springforum.controladores;
 
-import java.io.File;	
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -34,15 +34,14 @@ public class PartidoController {
 
 	@Autowired
 	private DAOStatusPartido daoStatusPartido;
-	
+
 	@RequestMapping("/cadastro/partido")
-	public ModelAndView partido(ModelAndView model) {
+	public ModelAndView partido(final ModelAndView model) {
 
 		if (model.getModelMap().get("partido") == null) {
 			model.addObject("partido", new Partido());
 		}
-		if (model.getModelMap().get("partidos") == null
-				&& model.getModelMap().get("exibePartidos") == null) {
+		if (model.getModelMap().get("partidos") == null && model.getModelMap().get("exibePartidos") == null) {
 			model.addObject("partidos", daoPartido.getPartidosAprovados());
 		}
 
@@ -51,7 +50,7 @@ public class PartidoController {
 	}
 
 	@RequestMapping("partido/gerenciarPartidos")
-	public ModelAndView gerenciar(ModelAndView mav) {
+	public ModelAndView gerenciar(final ModelAndView mav) {
 
 		if (mav.getModelMap().get("partidos") == null) {
 			mav.addObject("partidos", daoPartido.getPartidosEmAprovacao());
@@ -60,17 +59,17 @@ public class PartidoController {
 		mav.setViewName("partido/gerenciarPartidos");
 		return mav;
 	}
-	
-	@RequestMapping(value = "cadastro/cadastrarPartido/{idPartido}", method = RequestMethod.POST)
-	public ModelAndView partido(
-			@PathVariable("idPartido") Long idPartido,
-			@RequestParam(value = "nome") String nome,
-			@RequestParam(value = "sigla") String sigla,
-			@RequestParam(value = "descricao") String descricao,
-			@RequestParam(value = "avatar", required = false) MultipartFile avatar,
-			@RequestParam(value = "acao") String acao) {
 
-		ModelAndView model = new ModelAndView();
+	@RequestMapping(value = "cadastro/cadastrarPartido/{idPartido}", method = RequestMethod.POST)
+	public ModelAndView partido(@PathVariable("idPartido")
+	final Long idPartido, @RequestParam(value = "nome")
+	final String nome, @RequestParam(value = "sigla")
+	final String sigla, @RequestParam(value = "descricao")
+	final String descricao, @RequestParam(value = "avatar", required = false)
+	final MultipartFile avatar, @RequestParam(value = "acao")
+	final String acao) {
+
+		final ModelAndView model = new ModelAndView();
 		Partido partido = new Partido();
 
 		if (acao.equals("editar")) {
@@ -86,11 +85,9 @@ public class PartidoController {
 		try {
 			daoPartido.persistir(partido);
 			processaPartidoAvatar(avatar, partido);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			model.addObject("partido", partido);
-			model.addObject(
-					"mensagem",
-					"Erro ao cadastrar o partido, motivo do erro: Partido com o nome ou a sigla digitado já cadastrados");
+			model.addObject("mensagem", "Erro ao cadastrar o partido, motivo do erro: Partido com o nome ou a sigla digitado já cadastrados");
 			if (acao.equals("editar")) {
 				model.addObject("exibePartidos", false);
 			}
@@ -102,8 +99,9 @@ public class PartidoController {
 	}
 
 	@RequestMapping(value = "cadastro/partido/editar/{id}")
-	public ModelAndView editar(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
+	public ModelAndView editar(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
 		mav.addObject("partido", daoPartido.get(id));
 		mav.addObject("exibePartidos", false);
 		mav.addObject("acao", "editar");
@@ -111,58 +109,69 @@ public class PartidoController {
 	}
 
 	@RequestMapping(value = "cadastro/partido/excluir/{id}")
-	public ModelAndView excluir(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		Partido partido = daoPartido.get(id);
-		List<Politico> politicos = daoPolitico.getPoliticosPorPartido(partido);
-		
-		if (politicos.size() > 0) {
-			for (Politico pol : politicos) {
-				daoPolitico.excluir(pol);
-			}
-		}
+	public ModelAndView excluir(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final Partido partido = daoPartido.get(id);
+		final List<Politico> politicos = daoPolitico.getPoliticosPorPartido(partido);
 
-		daoPartido.excluir(partido);
-		mav.addObject("mensagem", "Partido excluido com Sucesso!");
-		return partido(mav);
+		if (politicos != null && politicos.size() > 0) {
+			mav.addObject("mensagem", "Existem políticos associados a esse partido!");
+		} else {
+			try {
+				daoPartido.excluir(partido);
+			} catch (final Exception e) {
+				mav.addObject("mensagem", "Houve um erro no processamento, por favor envie um email para o administrador");
+			}
+			mav.addObject("mensagem", "Partido excluido com Sucesso!");
+		}
+		mav.setViewName("redirect:/cadastro/partido");
+		return mav;
 	}
 
-	private void processaPartidoAvatar(MultipartFile avatar, Partido partido) {
-		File diretorio = new File("/springForum/avatares");
+	private void processaPartidoAvatar(final MultipartFile avatar, final Partido partido) {
+		final File diretorio = new File("/springForum/avatares");
 		if (!diretorio.exists()) {
 			diretorio.mkdirs();
 		}
 		try {
-			FileOutputStream arquivo = new FileOutputStream(
-					diretorio.getAbsolutePath() + "/" + partido.getSigla()
-							+ ".png");
+			final FileOutputStream arquivo = new FileOutputStream(diretorio.getAbsolutePath() + "/" + partido.getSigla() + ".png");
 			arquivo.write(avatar.getBytes());
 			arquivo.close();
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 
 		}
 	}
 
 	@RequestMapping(value = "partido/gerenciarPartidos/aprovar/{id}")
-	public ModelAndView aprovarPartido(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		Partido partido = daoPartido.get(id);
-		partido.setStatusPartido(daoStatusPartido
-				.get((long) EnumStatusPublicacao.APROVADO.getAcao()));
-		daoPartido.persistir(partido);
-		mav.addObject("mensagem", "Partido aprovado com sucesso!");
+	public ModelAndView aprovarPartido(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final Partido partido = daoPartido.get(id);
+		partido.setStatusPartido(daoStatusPartido.get((long) EnumStatusPublicacao.APROVADO.getAcao()));
+		try {
+			daoPartido.persistir(partido);
+			mav.addObject("mensagem", "Partido aprovado com sucesso!");
+		} catch (final Exception e) {
+			mav.addObject("mensagem", "Houve um erro no processamento, por favor envie um email para o administrador");
+		}
 		return gerenciar(mav);
 	}
 
 	@RequestMapping(value = "partido/gerenciarPartidos/reprovar/{id}")
-	public ModelAndView reprovarPublicacao(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		Partido partido = daoPartido.get(id);
-		partido.setStatusPartido(daoStatusPartido
-				.get((long) EnumStatusPublicacao.REPROVADO.getAcao()));
-		daoPartido.persistir(partido);
-		mav.addObject("mensagem", "Partido reprovado com sucesso!");
+	public ModelAndView reprovarPublicacao(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final Partido partido = daoPartido.get(id);
+		partido.setStatusPartido(daoStatusPartido.get((long) EnumStatusPublicacao.REPROVADO.getAcao()));
+		try {
+			daoPartido.persistir(partido);
+			mav.addObject("mensagem", "Partido reprovado com sucesso!");
+		} catch (final Exception e) {
+			mav.addObject("mensagem", "Houve um erro no processamento, por favor envie um email para o administrador");
+		}
+
 		return gerenciar(mav);
 	}
-	
+
 }

@@ -1,6 +1,6 @@
 package br.com.itexto.springforum.dao.hibernate;
 
-import java.util.ArrayList	;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -13,24 +13,24 @@ import br.com.itexto.springforum.dao.DAOPolitico;
 import br.com.itexto.springforum.entidades.Partido;
 import br.com.itexto.springforum.entidades.Politico;
 
-@Transactional(propagation= Propagation.SUPPORTS)
+@Transactional(propagation = Propagation.SUPPORTS)
 @Repository("daoPolitico")
 public class HBPolitico extends HBDAO<Politico> implements DAOPolitico {
-	
+
 	@Override
-	public Politico getPoliticoPorNome(String nome) {
-		Query query = getSession().createQuery("from Politico p where p.nome = ?");
-		query.setString(0, nome);
+	public Politico getPoliticoPorNome(final String nome) {
+		final Query query = getSession().createQuery("from Politico p where p.nome like ?");
+		query.setString(0, "%" + nome + "%");
 		return (Politico) query.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Politico> getPoliticosPorPartido(Partido partido) {
+	public List<Politico> getPoliticosPorPartido(final Partido partido) {
 		if (partido == null) {
 			return new ArrayList<Politico>();
 		}
-		Query query = getSession().createQuery("from Politico p where p.partido = ?");
+		final Query query = getSession().createQuery("from Politico p where p.partido = ?");
 		query.setEntity(0, partido);
 		return query.list();
 	}
@@ -41,9 +41,9 @@ public class HBPolitico extends HBDAO<Politico> implements DAOPolitico {
 	}
 
 	@Override
-	public Politico getPoliticoPorNomeEPartido(String nome, Long idPartido) {
-		Query query = getSession().createQuery("from Politico p where p.nome = ? and p.partido.id = ?");
-		query.setString(0, nome);
+	public Politico getPoliticoPorNomeEPartido(final String nome, final Long idPartido) {
+		final Query query = getSession().createQuery("from Politico p where p.nome like ? and p.partido.id = ?");
+		query.setString(0, "%" + nome + "%");
 		query.setLong(1, idPartido);
 		return (Politico) query.uniqueResult();
 	}
@@ -51,7 +51,7 @@ public class HBPolitico extends HBDAO<Politico> implements DAOPolitico {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Politico> getPoliticosAprovados() {
-		Query query = getSession().createQuery("from Politico p where p.statusPolitico.idStatusPolitico = ?");
+		final Query query = getSession().createQuery("from Politico p where p.statusPolitico.idStatusPolitico = ?");
 		query.setInteger(0, EnumStatusPolitico.APROVADO.getAcao());
 		return query.list();
 	}
@@ -59,9 +59,9 @@ public class HBPolitico extends HBDAO<Politico> implements DAOPolitico {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Politico> getPoliticosEmAprovacao() {
-		Query query = getSession().createQuery("from Politico p where p.statusPolitico.idStatusPolitico = ?");
+		final Query query = getSession().createQuery("from Politico p where p.statusPolitico.idStatusPolitico = ?");
 		query.setInteger(0, EnumStatusPolitico.AGUARDANDO_APROVACAO.getAcao());
 		return query.list();
 	}
-	
+
 }

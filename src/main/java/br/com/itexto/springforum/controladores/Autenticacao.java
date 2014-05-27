@@ -15,15 +15,15 @@ import br.com.itexto.springforum.entidades.Usuario;
 
 @Controller
 public class Autenticacao {
-	
+
 	@Autowired
 	private DAOUsuario daoUsuario;
-	
+
 	/**
 	 * Mapeamento de autenticação.
 	 * Reparem que neste ponto definimos que apenas POST será aceito no processo
 	 * de autenticação
-	 * 
+	 *
 	 * Para lidar com sessões, tudo o que precisamos fazer é incluir na chamada do método um atributo do tipo
 	 * HttpSession.
 	 * @param login
@@ -31,28 +31,34 @@ public class Autenticacao {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(@RequestParam("login") String login, @RequestParam("senha") String senha, HttpSession sessao) {
-		Usuario usuario = daoUsuario.getUsuario(login, senha);
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(@RequestParam("login")
+	final String login, @RequestParam("senha")
+	final String senha, final HttpSession sessao) {
+		final Usuario usuario = daoUsuario.getUsuario(login, senha);
 		if (usuario == null) {
 			return "loginFalho";
 		} else {
 			usuario.setUltimoLogin(new Date());
-			daoUsuario.persistir(usuario);
+			try {
+				daoUsuario.persistir(usuario);
+			} catch (final Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			sessao.setAttribute("usuario", usuario);
 			/**
 			 * Quando retornamos algo no formato redirect:/url estmaos
 			 * na realidade fazendo o redirecionamento para uma action lógica
 			 */
 			return "redirect:/";
-		} 
+		}
 	}
-	
-	
+
 	@RequestMapping("/logout")
-	public String logout(HttpSession session) {
+	public String logout(final HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
 	}
-	
+
 }

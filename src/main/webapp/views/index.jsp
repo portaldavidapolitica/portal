@@ -2,64 +2,19 @@
 <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 
-<div style="background: #48762A;">
-	<div class="row">
-		<div class="twelve columns">
-			<ul id="side-nav">
-				<li><a href="<c:url value="/"/>"><c:out value="Home" /></a></li>
-				<sec:authorize access="hasAnyRole('ROLE_MODERADOR,ROLE_ADMIN')">
-					<li><a href="#">Gerenciamento</a>
-						<ul>
-							<li><a
-								href="<c:url value="publicacao/gerenciarPublicacoes"/>"><c:out
-										value="Gerenciar Publicacoes" /></a></li>
-							<li><a href="<c:url value="politico/gerenciarPoliticos"/>"><c:out
-										value="Gerenciar Politicos" /></a></li>
-							<li><a href="<c:url value="partido/gerenciarPartidos"/>"><c:out
-										value="Gerenciar Partidos" /></a></li>
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
-								<li><a href="<c:url value="gerenciar/usuarios"/>"><c:out
-											value="Gerenciar Usuarios" /></a></li>
-							</sec:authorize>
-						</ul></li>
-				</sec:authorize>
-
-				<sec:authorize access="hasRole('ROLE_MEMBRO')">
-					<li><a href="#">Cadastros</a>
-						<ul>
-							<li><a href="<c:url value="cadastro/partido"/>"><c:out
-										value="Cadastro Partido" /></a></li>
-							<li><a href="cadastro/politico"><c:out
-										value="Cadastro Politico" /></a></li>
-							<li><a href="<c:url value="publicacao"/>"><c:out
-										value="Cadastro de Publicacoes" /></a></li>
-						</ul></li>
-				</sec:authorize>
-
-				<li><a href="#">Consulta</a>
-					<ul>
-						<li><a href="cadastro/politico"><c:out
-									value="Consulta Politicos" /></a></li>
-						<li><a href="<c:url value="cadastro/partido"/>"><c:out
-									value="Consulta Partidos" /></a></li>
-						<li><a href="<c:url value="publicacao"/>"><c:out
-									value="Consulta de Publicacoes" /></a></li>
-					</ul>
-				<li>
-			</ul>
-		</div>
-	</div>
-</div>
-
-<br />
-<br />
-
 <div class="row">
 	<div class="eight columns" style="position: inherit; z-index: -1;">
-		<h5>Portal da vida política</h5>
+		<center><h5>Portal da vida política</h5></center>
 		<p>O portal da vida política é um espaço onde os eleitores terão a
 			oportunidade de encontrar um conteúdo centralizado sobre determinado
-			políco.</p>
+			políco.</p><br/>
+		<center>
+		<h5>Links úteis</h5><br/>
+		<a href="http://www.portaltransparencia.gov.br">Portal da transparência</a><br/><br/>
+		<a href="http://www.tse.jus.br">Tribunal Superior Eleitoral</a><br/><br/>
+		<a href="http://www.senado.gov.br">Senado Federal</a><br/><br/>
+		<a href="http://www2.camara.leg.br/">Câmara dos deputados</a><br/><br/>
+		</center>
 	</div>
 </div>
 

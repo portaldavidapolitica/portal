@@ -1,11 +1,12 @@
 package br.com.itexto.springforum.controladores;
 
-import java.io.File;	
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.core.context.SecurityContextHolder;
+// import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,11 @@ import br.com.itexto.springforum.Enum.EnumPoliticoAcao;
 import br.com.itexto.springforum.Enum.EnumStatusPolitico;
 import br.com.itexto.springforum.dao.DAOPartido;
 import br.com.itexto.springforum.dao.DAOPolitico;
+import br.com.itexto.springforum.dao.DAOPublicacao;
 import br.com.itexto.springforum.dao.DAOStatusPolitico;
 import br.com.itexto.springforum.dao.DAOUsuario;
 import br.com.itexto.springforum.entidades.Politico;
+import br.com.itexto.springforum.entidades.Publicacao;
 
 @Controller
 public class PoliticoController {
@@ -37,8 +40,11 @@ public class PoliticoController {
 	@Autowired
 	private DAOStatusPolitico daoStatusPolitico;
 
+	@Autowired
+	private DAOPublicacao daoPublicacao;
+
 	@RequestMapping("/cadastro/politico")
-	public ModelAndView politico(ModelAndView mav) {
+	public ModelAndView politico(final ModelAndView mav) {
 
 		if (mav.getModelMap().get("partidos") == null) {
 			mav.addObject("partidos", daoPartido.getPartidosAprovados());
@@ -52,7 +58,7 @@ public class PoliticoController {
 	}
 
 	@RequestMapping("politico/gerenciarPoliticos")
-	public ModelAndView gerenciar(ModelAndView mav) {
+	public ModelAndView gerenciar(final ModelAndView mav) {
 
 		if (mav.getModelMap().get("politicos") == null) {
 			mav.addObject("politicos", daoPolitico.getPoliticosEmAprovacao());
@@ -63,14 +69,14 @@ public class PoliticoController {
 	}
 
 	@RequestMapping(value = "cadastro/cadastrarPolitico/{idPartido}", method = RequestMethod.POST)
-	public ModelAndView politico(
-			@PathVariable("idPartido") Long idPartido,
-			@RequestParam(value = "nome") String nome,
-			@RequestParam(value = "acao") String acao,
-			@RequestParam(value = "idPolitico") String idPolitico,
-			@RequestParam(value = "avatar", required = false) MultipartFile avatar) {
+	public ModelAndView politico(@PathVariable("idPartido")
+	final Long idPartido, @RequestParam(value = "nome")
+	final String nome, @RequestParam(value = "acao")
+	final String acao, @RequestParam(value = "idPolitico")
+	final String idPolitico, @RequestParam(value = "avatar", required = false)
+	final MultipartFile avatar) {
 
-		ModelAndView mav = new ModelAndView();
+		final ModelAndView mav = new ModelAndView();
 		Politico politico = new Politico();
 
 		// SecurityContextHolder.getContext().getAuthentication().getName();
@@ -79,9 +85,7 @@ public class PoliticoController {
 		if (acao.equals("editar")) {
 			politico = daoPolitico.get(Long.parseLong(idPolitico));
 		} else {
-			politico.setStatusPolitico(daoStatusPolitico
-					.get((long) EnumStatusPolitico.AGUARDANDO_APROVACAO
-							.getAcao()));
+			politico.setStatusPolitico(daoStatusPolitico.get((long) EnumStatusPolitico.AGUARDANDO_APROVACAO.getAcao()));
 		}
 
 		politico.setNome(nome);
@@ -89,9 +93,8 @@ public class PoliticoController {
 		try {
 			daoPolitico.persistir(politico);
 			processaPoliticoAvatar(avatar, politico);
-		} catch (Exception e) {
-			mav.addObject("mensagem", "Politico com o nome: " + nome
-					+ " já Cadastrado!");
+		} catch (final Exception e) {
+			mav.addObject("mensagem", "Politico com o nome: " + nome + " já Cadastrado!");
 			if (acao.equals("editar")) {
 				return editar(politico.getId());
 			} else {
@@ -104,10 +107,11 @@ public class PoliticoController {
 	}
 
 	@RequestMapping(value = "cadastro/politico/editar/{id}")
-	public ModelAndView editar(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
+	public ModelAndView editar(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
 
-		Politico politico = daoPolitico.get(id);
+		final Politico politico = daoPolitico.get(id);
 
 		mav.addObject("idPolitico", politico.getId());
 		mav.addObject("partidos", daoPartido.list(0, 100));
@@ -119,56 +123,73 @@ public class PoliticoController {
 	}
 
 	@RequestMapping(value = "cadastro/politico/excluir/{id}")
-	public ModelAndView excluir(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
+	public ModelAndView excluir(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
 
-		Politico politico = daoPolitico.get(id);
-		daoPolitico.excluir(politico);
-		mav.addObject("mensagem", "Politico excluido com Sucesso!");
-
-		return politico(mav);
+		final Politico politico = daoPolitico.get(id);
+		final List<Publicacao> publicacoes = daoPublicacao.getPublicacoesPorIdPolitico(politico.getId());
+		if (publicacoes != null & publicacoes.size() > 0) {
+			mav.addObject("mensagem", "Existem publicaçoes relacionadas a esse político!");
+		} else {
+			try {
+				daoPolitico.excluir(politico);
+			} catch (final Exception e) {
+				mav.addObject("mensagem", "Houve um erro no processamento, por favor envie um email para o administrador");
+			}
+			mav.addObject("mensagem", "Politico excluido com Sucesso!");
+		}
+		mav.setViewName("redirect:/cadastro/politico");
+		return mav;
 	}
 
-	private void processaPoliticoAvatar(MultipartFile avatar, Politico politico) {
-		File diretorio = new File("/springForum/avatares");
+	private void processaPoliticoAvatar(final MultipartFile avatar, final Politico politico) {
+		final File diretorio = new File("/springForum/avatares");
 		if (!diretorio.exists()) {
 			diretorio.mkdirs();
 		}
 		try {
-			FileOutputStream arquivo = new FileOutputStream(
-					diretorio.getAbsolutePath() + "/" + politico.getNome()
-							+ ".png");
+			final FileOutputStream arquivo = new FileOutputStream(diretorio.getAbsolutePath() + "/" + politico.getNome() + ".png");
 			arquivo.write(avatar.getBytes());
 			arquivo.close();
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 
 		}
 	}
 
 	@RequestMapping(value = "politico/gerenciarPoliticos/aprovar/{id}")
-	public ModelAndView aprovarPartido(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		Politico politico = daoPolitico.get(id);
-		politico.setStatusPolitico(daoStatusPolitico
-				.get((long) EnumStatusPolitico.APROVADO.getAcao()));
-		daoPolitico.persistir(politico);
-		mav.addObject("mensagem", "Politico aprovado com sucesso!");
+	public ModelAndView aprovarPartido(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final Politico politico = daoPolitico.get(id);
+		politico.setStatusPolitico(daoStatusPolitico.get((long) EnumStatusPolitico.APROVADO.getAcao()));
+		try {
+			daoPolitico.persistir(politico);
+			mav.addObject("mensagem", "Politico aprovado com sucesso!");
+		} catch (final Exception e) {
+			mav.addObject("mensagem", "Houve um erro no processamento, por favor envie um email para o administrador");
+		}
+
 		return gerenciar(mav);
 	}
 
 	@RequestMapping(value = "politico/gerenciarPoliticos/reprovar/{id}")
-	public ModelAndView reprovarPublicacao(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		Politico politico = daoPolitico.get(id);
-		politico.setStatusPolitico(daoStatusPolitico
-				.get((long) EnumStatusPolitico.REPROVADO.getAcao()));
-		daoPolitico.persistir(politico);
-		mav.addObject("mensagem", "Politico reprovado com sucesso!");
+	public ModelAndView reprovarPublicacao(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final Politico politico = daoPolitico.get(id);
+		politico.setStatusPolitico(daoStatusPolitico.get((long) EnumStatusPolitico.REPROVADO.getAcao()));
+		try {
+			daoPolitico.persistir(politico);
+			mav.addObject("mensagem", "Politico reprovado com sucesso!");
+		} catch (final Exception e) {
+			mav.addObject("mensagem", "Houve um erro no processamento, por favor envie um email para o administrador");
+		}
 		return gerenciar(mav);
 	}
 
-	private void gravaLogPartido(EnumPoliticoAcao acao, Politico politico){
-		
+	private void gravaLogPartido(final EnumPoliticoAcao acao, final Politico politico) {
+
 	}
-	
+
 }

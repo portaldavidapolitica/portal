@@ -25,21 +25,20 @@ public class GerenciamentoUsuariosController {
 	private DAOPermissaoUsuario daoPermissaoUsuario;
 
 	@RequestMapping("/gerenciar/usuarios")
-	public ModelAndView gerenciarUsuario(ModelAndView mav) {
+	public ModelAndView gerenciarUsuario(final ModelAndView mav) {
 
 		if (mav.getModelMap().get("usuario") == null) {
-			List<Usuario> usuario = daoUsuario.list(0, 200);
-			List<Usuario> usuarios = new ArrayList<Usuario>();
+			final List<Usuario> usuario = daoUsuario.list(0, 200);
+			final List<Usuario> usuarios = new ArrayList<Usuario>();
 
-			for (Usuario user : usuario) {
-				user.setPermissoesUsuario(daoPermissaoUsuario
-						.getPermissoesUsuario(user));
+			for (final Usuario user : usuario) {
+				user.setPermissoesUsuario(daoPermissaoUsuario.getPermissoesUsuario(user));
 				usuarios.add(user);
 			}
 			mav.addObject("usuarios", usuarios);
 		}
 
-		List<String> roles = new ArrayList<String>();
+		final List<String> roles = new ArrayList<String>();
 		roles.add("MEMBRO");
 		roles.add("MODERADOR");
 		roles.add("ADMIN");
@@ -50,21 +49,24 @@ public class GerenciamentoUsuariosController {
 	}
 
 	@RequestMapping(value = "gerenciamento/gerenciarUsuarios/editarUsuario")
-	public ModelAndView editarUsuario(
-			@RequestParam(value = "idUsuario") String id,
-			@RequestParam(value = "permissoes") String[] permissoes) {
-		ModelAndView mav = new ModelAndView();
-		Usuario usuario = daoUsuario.get(Long.parseLong(id));
-		List<PermissaoUsuario> listaPermissoes = daoPermissaoUsuario
-				.getPermissoesUsuario(usuario);
+	public ModelAndView editarUsuario(@RequestParam(value = "idUsuario")
+	final String id, @RequestParam(value = "permissoes")
+	final String[] permissoes) {
+		final ModelAndView mav = new ModelAndView();
+		final Usuario usuario = daoUsuario.get(Long.parseLong(id));
+		final List<PermissaoUsuario> listaPermissoes = daoPermissaoUsuario.getPermissoesUsuario(usuario);
 		if (listaPermissoes.size() > 0) {
-			for (PermissaoUsuario perm : listaPermissoes) {
-				daoPermissaoUsuario.excluir(perm);
+			for (final PermissaoUsuario perm : listaPermissoes) {
+				try {
+					daoPermissaoUsuario.excluir(perm);
+				} catch (final Exception e) {
+					mav.addObject("mensagem", "Houve um erro no processamento, por favor envie um email para o administrador");
+				}
 			}
 		}
 
-		for (String permissao : permissoes) {
-			daoPermissaoUsuario.addRole("ROLE_"+permissao, usuario);
+		for (final String permissao : permissoes) {
+			daoPermissaoUsuario.addRole("ROLE_" + permissao, usuario);
 		}
 
 		mav.addObject("mensagem", "Usuario editado com sucesso!");
@@ -72,36 +74,33 @@ public class GerenciamentoUsuariosController {
 	}
 
 	@RequestMapping(value = "gerenciamento/gerenciarUsuarios/editar/{id}")
-	public ModelAndView editar(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		Usuario usuario = daoUsuario.get(id);
-		usuario.setPermissoesUsuario(daoPermissaoUsuario
-				.getPermissoesUsuario(usuario));
+	public ModelAndView editar(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final Usuario usuario = daoUsuario.get(id);
+		usuario.setPermissoesUsuario(daoPermissaoUsuario.getPermissoesUsuario(usuario));
 		mav.addObject("usuario", usuario);
 		mav.addObject("acao", "editar");
 		return gerenciarUsuario(mav);
 	}
 
 	@RequestMapping(value = "gerenciamento/gerenciarUsuarios/excluir/{id}")
-	public ModelAndView excluir(@PathVariable("id") Long id) {
-		ModelAndView mav = new ModelAndView();
-		Usuario usuario = daoUsuario.get(id);
-		List<PermissaoUsuario> permissaoUsuario = daoPermissaoUsuario
-				.getPermissoesUsuario(usuario);
+	public ModelAndView excluir(@PathVariable("id")
+	final Long id) {
+		final ModelAndView mav = new ModelAndView();
+		final Usuario usuario = daoUsuario.get(id);
+		final List<PermissaoUsuario> permissaoUsuario = daoPermissaoUsuario.getPermissoesUsuario(usuario);
 		try {
 			if (permissaoUsuario.size() > 0) {
-				for (PermissaoUsuario permissao : permissaoUsuario) {
+				for (final PermissaoUsuario permissao : permissaoUsuario) {
 					daoPermissaoUsuario.excluir(permissao);
 				}
 			}
 			daoUsuario.excluir(usuario);
 			mav.addObject("mensagem", "Usuario excluido com sucesso!");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			mav.addObject("usuario", usuario);
-			mav.addObject(
-					"mensagem",
-					"Erro ao excluir o usuario, motivo do erro: "
-							+ e.getCause() + " : " + e.getMessage());
+			mav.addObject("mensagem", "Erro ao excluir o usuario, motivo do erro: " + e.getCause() + " : " + e.getMessage());
 		}
 		return gerenciarUsuario(mav);
 	}

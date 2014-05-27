@@ -58,13 +58,13 @@
 	<definition name="publicacao/gerenciarPublicacoes" extends="main">
 		<put-attribute name="conteudo" value="/views/publicacao/gerenciarPublicacoes.jsp" />
 	</definition>
-	
+
 	<definition name="partido/gerenciarPartidos" extends="main">
 		<put-attribute name="conteudo" value="/views/partido/gerenciarPartidos.jsp" />
 	</definition>
-	
+
 	<definition name="politico/gerenciarPoliticos" extends="main">
 		<put-attribute name="conteudo" value="/views/politico/gerenciarPoliticos.jsp" />
 	</definition>
-	
+
 </tiles-definitions>

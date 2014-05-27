@@ -57,6 +57,8 @@
 	<div class="eight columns">
 		<sf:form modelAttribute="usuario" action="executarRegistro"
 			enctype="multipart/form-data">
+			<input type="hidden" name="msg" value="${mensagem}" />
+			<h1>${mensagem}</h1>
 			<label for="nome">Nome:<sf:errors path="nome" cssClass="erro" /></label>
 			<sf:input path="nome" class="four" />
 
@@ -74,7 +76,7 @@
 			<input type="file" name="avatar" />
 
 
-			<input type="submit" value="Fa&ccedil;a parte!"
+			<input type="submit" value="Faça parte!"
 				class="tiny button success" />
 
 			<br />
